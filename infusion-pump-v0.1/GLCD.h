@@ -1,4 +1,4 @@
-#include "msp430FG437.h"
+#include "msp430FG439.h"
 
 #define RSout P2DIR |= 0x04  //A0
 #define RWout P2DIR |= 0x02  //WR

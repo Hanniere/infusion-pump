@@ -1,4 +1,4 @@
-#include "msp430FG437.h"
+#include "msp430FG439.h"
 
 double profiles[5][25];
 
@@ -9,8 +9,6 @@ void main(void) {
         glcd_turn_on();
 	glcd_fill(0);
         verify();
-        
-        
         
       
         double profiles[5][25];

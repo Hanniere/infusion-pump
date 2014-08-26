@@ -1,6 +1,6 @@
-#include "msp430FG437.h"
-#define TAMANHO_FRASE 60
-short ref = 122;//max=124
+#include "msp430FG439.h"
+#define TAMANHO_FRASE 15
+short ref = 92;//max=124
 char f1 = 1;//Representa a segunda linha de baixo para cima do display.
 char f2 = 2;//Representa a terceira linha de baixo para cima do display.
 
