@@ -12,6 +12,7 @@ void main(void) {
         
         
         
+      
         double profiles[5][25];
         /*Perfis em forma de matriz: 
         Cada linha representaum perfil.
