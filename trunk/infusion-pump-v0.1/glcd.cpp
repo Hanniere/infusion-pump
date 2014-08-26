@@ -1,5 +1,5 @@
 #include "GLCD.h"
-#include "msp430FG437.h"
+#include "msp430FG439.h"
 
 
 void glcd_gotoxy(unsigned char x, unsigned char y, unsigned char lado);
@@ -13,8 +13,8 @@ void nt7538_12864_writecommand(char x)
     ENset;	// nt7538_12864_rd=1;
 
 
-
-
+    
+    
     P1OUT=x;
 
     RWclr;	//nt7538_12864_wr=0;

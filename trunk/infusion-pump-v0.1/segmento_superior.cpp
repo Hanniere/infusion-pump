@@ -1,4 +1,4 @@
-#include "msp430FG437.h"
+#include "msp430FG439.h"
 
 short espaco = 131-24;
 char f3 = 5;
@@ -696,28 +696,6 @@ void faixa5(short numero, short pos)
     }
 }
 
-void ponto_on()
-{
-    char f1 = 0x3;
-    short i;
-    for(i=0; i<7; i++)
-    {
-        glcd_gotoxy(f1,espaco-28-i-(31*1),0);
-        glcd_write_data(0x7E,1);
-    }
-}
-
-void ponto_off()
-{
-    char f1 = 0x3;
-    short i;
-    for(i=0; i<7; i++)
-    {
-        glcd_gotoxy(f1,espaco-28-i-(31*1),0);
-        glcd_write_data(0x0,1);
-    }
-}
-
 void numero(short numero, short pos)
 {
     faixa1(numero,pos);
@@ -999,6 +977,28 @@ void continuo_off()
         glcd_gotoxy(f2,espaco-i,0);
         glcd_write_data(0x0,1);
         glcd_gotoxy(f1,espaco-i,0);
+        glcd_write_data(0x0,1);
+    }
+}
+
+void ponto_on()
+{
+    char f1 = 0x3;
+    short i;
+    for(i=0; i<7; i++)
+    {
+        glcd_gotoxy(f1,espaco-28-i-(31*1),0);
+        glcd_write_data(0x7E,1);
+    }
+}
+
+void ponto_off()
+{
+    char f1 = 0x3;
+    short i;
+    for(i=0; i<7; i++)
+    {
+        glcd_gotoxy(f1,espaco-28-i-(31*1),0);
         glcd_write_data(0x0,1);
     }
 }
