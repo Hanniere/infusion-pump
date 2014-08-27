@@ -1,4 +1,5 @@
 #include "msp430FG439.h"
+#include "GLCD.h"
 
 unsigned short int espaco = 131-24;
 char f3 = 5;
@@ -736,7 +737,7 @@ void units_off()
 
 void units(unsigned short int mode)
 {
-    if(mode == false){
+    if(mode == 0){
         units_off();
     }else{
         units_on();
@@ -779,10 +780,10 @@ void hours_off()
 
 void hours(unsigned short int mode)
 {
-    if(mode == false){
-        h_off();
+    if(mode == 0){
+        hours_off();
     }else{
-        h_on();
+        hours_on();
     }
 }
 
@@ -840,7 +841,7 @@ void percent_off()
 
 void percent(unsigned short int mode)
 {
-    if(mode == false){
+    if(mode == 0){
         percent_off();
     }else{
         percent_on();
@@ -916,7 +917,7 @@ void bolus_off()
 
 void bolus(unsigned short int mode)
 {
-    if(mode == false){
+    if(mode == 0){
         bolus_off();
     }else{
         bolus_on();
@@ -1019,10 +1020,10 @@ void basal_off()
 
 void basal(unsigned short int mode)
 {
-    if(mode == false){
-        continuo_off();
+    if(mode == 0){
+        basal_off();
     }else{
-        continuo_on();
+        basal_on();
     }
 }
 
@@ -1050,7 +1051,7 @@ void point_off()
 
 void point(unsigned short int mode)
 {
-    if(mode == false){
+    if(mode == 0){
         point_off();
     }else{
         point_on();
