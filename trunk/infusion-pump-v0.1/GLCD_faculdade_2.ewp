@@ -2150,32 +2150,26 @@
       <data/>
     </settings>
   </configuration>
-  <file>
-    <name>$PROJ_DIR$\font_16x114.cpp</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\glcd.cpp</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\GLCD.h</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\instances.cpp</name>
-  </file>
+  <group>
+    <name>GUI</name>
+    <file>
+      <name>$PROJ_DIR$\GUI\DISPLAY.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\GUI\glcd.cpp</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\GUI\GLCD.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\GUI\segmento_inferior.cpp</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\GUI\segmento_superior.cpp</name>
+    </file>
+  </group>
   <file>
     <name>$PROJ_DIR$\main.cpp</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\number_40x82.cpp</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\symbols_8x132.cpp</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\table_infusion.cpp</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\words.cpp</name>
   </file>
 </project>
 

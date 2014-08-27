@@ -1309,7 +1309,7 @@ void letter(short letter, short pos)
     }
 }
 
-void write_data_menu(char phrase[TAMANHO_FRASE])
+void write_data(char phrase[TAMANHO_FRASE])
 {
     short i, letra,j, contador, dif;
     contador = 1;
@@ -1353,5 +1353,5 @@ void write_data_menu(char phrase[TAMANHO_FRASE])
 }
 
 void cout(char frase[TAMANHO_FRASE]){//saida simplificada da frase, chama a funcao write_data_menu.
-  write_data_menu(frase);
+  write_data(frase);
 }

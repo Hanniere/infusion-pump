@@ -734,7 +734,16 @@ void units_off()
     }
 }
 
-void h_on()
+void units(bool mode)
+{
+    if(mode == false){
+        units_off();
+    }else{
+        units_on();
+    }
+}
+
+void hours_on()
 {
     short i;
     for(i=0; i<4; i++)
@@ -758,13 +767,22 @@ void h_on()
     }
 }
 
-void h_off()
+void hours_off()
 {
     short i;
     for(i=0; i<9; i++)
     {
         glcd_gotoxy(f4,espaco-30-i-(31*2),0);
         glcd_write_data(0x0,1);
+    }
+}
+
+void hours(bool mode)
+{
+    if(mode == false){
+        h_off();
+    }else{
+        h_on();
     }
 }
 
@@ -820,7 +838,16 @@ void percent_off()
     espaco = 131-24;
 }
 
-void bolt_on()
+void percent(bool mode)
+{
+    if(mode == false){
+        percent_off();
+    }else{
+        percent_on();
+    }
+}
+
+void bolus_on()
 {
     espaco = 127;
     char f1 = 3;
@@ -869,7 +896,7 @@ void bolt_on()
     espaco = 131-24;
 }
 
-void bolt_off()
+void bolus_off()
 {
     short espaco = 127;
     char f1 = 3;
@@ -887,7 +914,16 @@ void bolt_off()
     }
 }
 
-void continuo_on()
+void bolus(bool mode)
+{
+    if(mode == false){
+        bolus_off();
+    }else{
+        bolus_on();
+    }
+}
+
+void basal_on()
 {
     short espaco = 130;
     char f1 = 6;
@@ -966,7 +1002,7 @@ void continuo_on()
     glcd_write_data(0xFE,1);
 }
 
-void continuo_off()
+void basal_off()
 {
     short espaco = 130;
     char f1 = 6;
@@ -981,7 +1017,16 @@ void continuo_off()
     }
 }
 
-void ponto_on()
+void basal(bool mode)
+{
+    if(mode == false){
+        continuo_off();
+    }else{
+        continuo_on();
+    }
+}
+
+void point_on()
 {
     char f1 = 0x3;
     short i;
@@ -992,7 +1037,7 @@ void ponto_on()
     }
 }
 
-void ponto_off()
+void point_off()
 {
     char f1 = 0x3;
     short i;
@@ -1000,5 +1045,14 @@ void ponto_off()
     {
         glcd_gotoxy(f1,espaco-28-i-(31*1),0);
         glcd_write_data(0x0,1);
+    }
+}
+
+void point(bool mode)
+{
+    if(mode == false){
+        point_off();
+    }else{
+        point_on();
     }
 }

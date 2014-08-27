@@ -39,3 +39,12 @@
 #define WriteData(data) P1OUT = data;
 
 #define DATAshf	0
+
+void glcd_gotoxy(unsigned char x, unsigned char y, unsigned char lado);
+void glcd_write_data(unsigned char dataToWrite,unsigned char lado);
+void nt7538_12864_writecommand(char x);
+void glcd_setup();
+void glcd_turn_off();
+void glcd_turn_on();
+void glcd_fill(unsigned char data);
+void glcd_free();//Limpa toda a tela do GLCD
