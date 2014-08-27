@@ -1,13 +1,13 @@
 #include "msp430FG439.h"
 
-short espaco = 131-24;
+unsigned short int espaco = 131-24;
 char f3 = 5;
 char f4 = 6;
 char f5 = 7;
 
-void faixa1(short numero, short pos)
+void faixa1(unsigned short int numero, unsigned short int pos)
 {
-    short i;
+    unsigned short int i;
     if (numero == 5|| numero==6)
     {
         glcd_gotoxy(f5,espaco-5-(31*pos),0);
@@ -180,9 +180,9 @@ void faixa1(short numero, short pos)
     }
 }
 
-void faixa2(short numero, short pos)
+void faixa2(unsigned short int numero, unsigned short int pos)
 {
-    short i;
+    unsigned short int i;
     if (numero == 1|| numero==2 || numero==3)
     {
         for (i=0; i<17; i++)
@@ -235,9 +235,9 @@ void faixa2(short numero, short pos)
     }
 }
 
-void faixa3(short numero, short pos)
+void faixa3(unsigned short int numero, unsigned short int pos)
 {
-    short i;
+    unsigned short int i;
     if (numero == 1|| numero==7)
     {
         for (i=0; i<17; i++)
@@ -523,10 +523,10 @@ void faixa3(short numero, short pos)
     }
 }
 
-void faixa4(short numero, short pos)
+void faixa4(unsigned short int numero, unsigned short int pos)
 {
     char f2 = 4;
-    short i;
+    unsigned short int i;
     if (numero == 1|| numero==3 || numero==4 || numero==5 || numero==7 || numero ==9)
     {
         for (i=0; i<17; i++)
@@ -579,10 +579,10 @@ void faixa4(short numero, short pos)
     }
 }
 
-void faixa5(short numero, short pos)
+void faixa5(unsigned short int numero, unsigned short int pos)
 {
     char f1 = 0x3;
-    short i;
+    unsigned short int i;
     if (numero == 5|| numero== 3)
     {
         glcd_gotoxy(f1,espaco-5-(31*pos),0);
@@ -696,7 +696,7 @@ void faixa5(short numero, short pos)
     }
 }
 
-void numero(short numero, short pos)
+void numero(unsigned short int numero, unsigned short int pos)
 {
     faixa1(numero,pos);
     faixa2(numero,pos);
@@ -707,7 +707,7 @@ void numero(short numero, short pos)
 
 void units_on()
 {
-    short i;
+    unsigned short int i;
     glcd_gotoxy(f5,espaco-33-(31*2),0);
     glcd_write_data(0x7C,1);
     glcd_gotoxy(f5,espaco-34-(31*2),0);
@@ -726,7 +726,7 @@ void units_on()
 
 void units_off()
 {
-    short i;
+    unsigned short int i;
     for(i=0; i<7; i++)
     {
         glcd_gotoxy(f5,espaco-33-i-(31*2),0);
@@ -734,7 +734,7 @@ void units_off()
     }
 }
 
-void units(bool mode)
+void units(unsigned short int mode)
 {
     if(mode == false){
         units_off();
@@ -745,7 +745,7 @@ void units(bool mode)
 
 void hours_on()
 {
-    short i;
+    unsigned short int i;
     for(i=0; i<4; i++)
     {
         glcd_gotoxy(f4,espaco-30-i-(31*2),0);
@@ -769,7 +769,7 @@ void hours_on()
 
 void hours_off()
 {
-    short i;
+    unsigned short int i;
     for(i=0; i<9; i++)
     {
         glcd_gotoxy(f4,espaco-30-i-(31*2),0);
@@ -777,7 +777,7 @@ void hours_off()
     }
 }
 
-void hours(bool mode)
+void hours(unsigned short int mode)
 {
     if(mode == false){
         h_off();
@@ -791,7 +791,7 @@ void percent_on()
     espaco = 131-27;
     char f1 = 3;
     char f2 = 4;
-    short i;
+    unsigned short int i;
     glcd_gotoxy(f1,espaco-28-(31*2),0);
     glcd_write_data(0xC0,1);
     glcd_gotoxy(f1,espaco-29-(31*2),0);
@@ -824,7 +824,7 @@ void percent_off()
 {
     espaco = 131-27;
     char f2 = 4;
-    short i;
+    unsigned short int i;
     for(i=0; i<9; i++)
     {
         glcd_gotoxy(f2,espaco-28-(31*2)-i,0);
@@ -838,7 +838,7 @@ void percent_off()
     espaco = 131-24;
 }
 
-void percent(bool mode)
+void percent(unsigned short int mode)
 {
     if(mode == false){
         percent_off();
@@ -852,7 +852,7 @@ void bolus_on()
     espaco = 127;
     char f1 = 3;
     char f2 = 4;
-    short i;
+    unsigned short int i;
     glcd_gotoxy(f2,espaco,0);
     glcd_write_data(0x1,1);
     glcd_gotoxy(f2,espaco-1,0);
@@ -898,10 +898,10 @@ void bolus_on()
 
 void bolus_off()
 {
-    short espaco = 127;
+    unsigned short int espaco = 127;
     char f1 = 3;
     char f2 = 4;
-    short i;
+    unsigned short int i;
     for(i=0; i<9; i++)
     {
         glcd_gotoxy(f2,espaco-i,0);
@@ -914,7 +914,7 @@ void bolus_off()
     }
 }
 
-void bolus(bool mode)
+void bolus(unsigned short int mode)
 {
     if(mode == false){
         bolus_off();
@@ -925,10 +925,10 @@ void bolus(bool mode)
 
 void basal_on()
 {
-    short espaco = 130;
+    unsigned short int espaco = 130;
     char f1 = 6;
     char f2 = 5;
-    short i;
+    unsigned short int i;
     glcd_gotoxy(f1,espaco,0);
     glcd_write_data(0x1F,1);
     for(i=0; i<2; i++)
@@ -1004,10 +1004,10 @@ void basal_on()
 
 void basal_off()
 {
-    short espaco = 130;
+    unsigned short int espaco = 130;
     char f1 = 6;
     char f2 = 5;
-    short i;
+    unsigned short int i;
     for (i=0; i<16; i++)
     {
         glcd_gotoxy(f2,espaco-i,0);
@@ -1017,7 +1017,7 @@ void basal_off()
     }
 }
 
-void basal(bool mode)
+void basal(unsigned short int mode)
 {
     if(mode == false){
         continuo_off();
@@ -1029,7 +1029,7 @@ void basal(bool mode)
 void point_on()
 {
     char f1 = 0x3;
-    short i;
+    unsigned short int i;
     for(i=0; i<7; i++)
     {
         glcd_gotoxy(f1,espaco-28-i-(31*1),0);
@@ -1040,7 +1040,7 @@ void point_on()
 void point_off()
 {
     char f1 = 0x3;
-    short i;
+    unsigned short int i;
     for(i=0; i<7; i++)
     {
         glcd_gotoxy(f1,espaco-28-i-(31*1),0);
@@ -1048,7 +1048,7 @@ void point_off()
     }
 }
 
-void point(bool mode)
+void point(unsigned short int mode)
 {
     if(mode == false){
         point_off();
