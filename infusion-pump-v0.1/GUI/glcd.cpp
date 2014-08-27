@@ -1,11 +1,6 @@
 #include "GLCD.h"
 #include "msp430FG439.h"
 
-
-void glcd_gotoxy(unsigned char x, unsigned char y, unsigned char lado);
-void glcd_write_data(unsigned char dataToWrite,unsigned char lado);
-
-
 void nt7538_12864_writecommand(char x)
 {
 
@@ -24,8 +19,7 @@ void nt7538_12864_writecommand(char x)
     RWset;	//nt7538_12864_wr=1;
 }
 
-
-void glcd_setup(void)
+void glcd_setup()
 {
     //configura pinos de controle
     RSout;
@@ -105,7 +99,7 @@ void glcd_setup(void)
 
 }
 
-void glcd_turn_off(void)
+void glcd_turn_off()
 {
     RSclr;
     RWclr;
@@ -117,7 +111,7 @@ void glcd_turn_off(void)
     WriteData(0x00);
 }
 
-void glcd_turn_on(void)
+void glcd_turn_on()
 {
     glcd_setup();
 }
@@ -130,6 +124,14 @@ void glcd_gotoxy(unsigned char x, unsigned char y, unsigned char lado)
     nt7538_12864_writecommand(0x10 + (y>>4)); // Column Address Set
     nt7538_12864_writecommand(0x00 + (y & 0x0F)); // Column Address Set
     RSset;
+
+}
+
+void glcd_write_data(unsigned char dataToWrite,unsigned char lado)
+{
+
+    RSset;
+    nt7538_12864_writecommand(dataToWrite);
 
 }
 
@@ -150,7 +152,7 @@ void glcd_fill(unsigned char data)
     }
 }
 
-void glcd_free() //Limpa toda a tela do GLCD
+void glcd_free()
 {
     short i, j;
 
@@ -162,12 +164,4 @@ void glcd_free() //Limpa toda a tela do GLCD
             glcd_write_data(0x00,0);
         }
     }
-}
-
-void glcd_write_data(unsigned char dataToWrite,unsigned char lado)
-{
-
-    RSset;
-    nt7538_12864_writecommand(dataToWrite);
-
 }
