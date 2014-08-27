@@ -22,7 +22,7 @@
 #define CS1clr P5OUT &= ~0x80
 //#define CS2clr P5OUT &= ~0x80
 #define RSTclr P2OUT &= ~0x08
-#define DATAout P1OUT &= ~0xFF
+#define DATAOUT P1OUT &= ~0xFF
 
 #define BLUE 1
 #define WHITE 0
@@ -48,3 +48,4 @@ void glcd_turn_off();
 void glcd_turn_on();
 void glcd_fill(unsigned char data);
 void glcd_free();//Limpa toda a tela do GLCD
+

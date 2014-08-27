@@ -1,5 +1,7 @@
 #include "msp430FG439.h"
+#include "GLCD.h"
 #define TAMANHO_FRASE 15
+
 unsigned short int ref = 92;//max=124
 char f1 = 1;//Representa a segunda linha de baixo para cima do display.
 char f2 = 2;//Representa a terceira linha de baixo para cima do display.
@@ -969,7 +971,6 @@ void letter_x(unsigned short int pos) //Imprime a letra X
 {
     if (pos>=0&&pos<=10)
     {
-        unsigned short int i;
         glcd_gotoxy(f2,(ref)-(pos*10),0);
         glcd_write_data(0xE0,1);
         glcd_gotoxy(f2,((ref-1))-(pos*10),0);
@@ -1212,6 +1213,8 @@ unsigned short int convert_letter_number(char letter){
     break;
   case 'z': return 26;
   break;
+  
+  default: return 0;
   }
 }
 

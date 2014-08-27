@@ -29,7 +29,7 @@ void glcd_setup()
     //CS2out;
     RSTout;
     //BLout;
-    DATAout;
+    DATAOUT;
     P1DIR = 0xFF;
 
     RSTclr;
