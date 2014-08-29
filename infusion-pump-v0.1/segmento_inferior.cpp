@@ -78,7 +78,7 @@ void more_symbol_off() //Apaga o simbolo.
 
 void letter_off(unsigned short int pos) //Apaga qualquer letra
 {
-    if (pos>=0&&pos<=10)
+    if (pos<=10)
     {
         unsigned short int i;
         for(i=0; i<9; i++)
@@ -96,7 +96,7 @@ void letter_off(unsigned short int pos) //Apaga qualquer letra
 
 void letter_traco(unsigned short int pos)
 {
-    if (pos>=0&&pos<=10)
+    if (pos<=10)
     {
         unsigned short int i;
         for (i=0; i<9; i++)
@@ -111,7 +111,7 @@ void letter_traco(unsigned short int pos)
 
 void letter_0(unsigned short int pos)
 {
-    if (pos>=0&&pos<=10)
+    if (pos<=10)
     {
         unsigned short int i;
         glcd_gotoxy(f1,(ref)-(pos*10),0);
@@ -147,7 +147,7 @@ void letter_0(unsigned short int pos)
 
 void letter_1(unsigned short int pos)
 {
-    if (pos>=0&&pos<=10)
+    if (pos<=10)
     {
         unsigned short int i;
         for (i=0; i<5; i++)
@@ -187,7 +187,7 @@ void letter_2(unsigned short int pos)
 
 void letter_a(unsigned short int pos) //Imprime a letra A
 {
-    if (pos>=0&&pos<=10)
+    if (pos<=10)
     {
         unsigned short int i;
         for(i=0; i<2; i++)
@@ -225,7 +225,7 @@ void letter_a(unsigned short int pos) //Imprime a letra A
 
 void letter_b(unsigned short int pos) //imprime a letra B
 {
-    if (pos>=0&&pos<=10)
+    if (pos<=10)
     {
         unsigned short int i;
         for(i=0; i<2; i++)
@@ -263,7 +263,7 @@ void letter_b(unsigned short int pos) //imprime a letra B
 
 void letter_c(unsigned short int pos) //imprime a letra C
 {
-    if (pos>=0&&pos<=10)
+    if (pos<=10)
     {
         unsigned short int i;
         for(i=0; i<2; i++)
@@ -291,7 +291,7 @@ void letter_c(unsigned short int pos) //imprime a letra C
 
 void letter_d(unsigned short int pos) //Imprime a letra D
 {
-    if (pos>=0&&pos<=10)
+    if (pos<=10)
     {
         unsigned short int i;
         for(i=0; i<2; i++)
@@ -329,7 +329,7 @@ void letter_d(unsigned short int pos) //Imprime a letra D
 
 void letter_e(unsigned short int pos) //Imprime a letra E
 {
-    if (pos>=0&&pos<=10)
+    if (pos<=10)
     {
         unsigned short int i;
         for(i=0; i<2; i++)
@@ -357,7 +357,7 @@ void letter_e(unsigned short int pos) //Imprime a letra E
 
 void letter_f(unsigned short int pos) //Imprime a letra F
 {
-    if (pos>=0&&pos<=10)
+    if (pos<=10)
     {
         unsigned short int i;
         for(i=0; i<2; i++)
@@ -385,7 +385,7 @@ void letter_f(unsigned short int pos) //Imprime a letra F
 
 void letter_g(unsigned short int pos) //Imprime a letra G
 {
-    if (pos>=0&&pos<=10)
+    if (pos<=10)
     {
         unsigned short int i;
         for(i=0; i<2; i++)
@@ -428,7 +428,7 @@ void letter_g(unsigned short int pos) //Imprime a letra G
 
 void letter_h(unsigned short int pos) //Imprime a letra H
 {
-    if (pos>=0&&pos<=10)
+    if (pos<=10)
     {
         unsigned short int i;
         for(i=0; i<2; i++)
@@ -466,7 +466,7 @@ void letter_h(unsigned short int pos) //Imprime a letra H
 
 void letter_i(unsigned short int pos) //Imprime a letra I
 {
-    if (pos>=0&&pos<=10)
+    if (pos<=10)
     {
         unsigned short int i;
         for(i=0; i<3; i++)
@@ -504,7 +504,7 @@ void letter_i(unsigned short int pos) //Imprime a letra I
 
 void letter_j(unsigned short int pos) //Imprime a letra J
 {
-    if (pos>=0&&pos<=10)
+    if (pos<=10)
     {
         unsigned short int i;
         for(i=0; i<2; i++)
@@ -532,7 +532,7 @@ void letter_j(unsigned short int pos) //Imprime a letra J
 
 void letter_k(unsigned short int pos) //Imprime a letra K
 {
-    if (pos>=0&&pos<=10)
+    if (pos<=10)
     {
         unsigned short int i;
         for(i=0; i<2; i++)
@@ -587,7 +587,7 @@ void letter_k(unsigned short int pos) //Imprime a letra K
 
 void letter_l(unsigned short int pos) //Imprime a letra L
 {
-    if (pos>=0&&pos<=10)
+    if (pos<=10)
     {
         unsigned short int i;
         for(i=0; i<2; i++)
@@ -610,7 +610,7 @@ void letter_l(unsigned short int pos) //Imprime a letra L
 
 void letter_m(unsigned short int pos) //Imprime a letra M
 {
-    if (pos>=0&&pos<=10)
+    if (pos<=10)
     {
         unsigned short int i;
         for(i=0; i<2; i++)
@@ -648,7 +648,7 @@ void letter_m(unsigned short int pos) //Imprime a letra M
 
 void letter_n(unsigned short int pos) //Imprime a letra N
 {
-    if (pos>=0&&pos<=10)
+    if (pos<=10)
     {
         unsigned short int i;
         for (i=0; i<2; i++)
@@ -688,7 +688,7 @@ void letter_n(unsigned short int pos) //Imprime a letra N
 
 void letter_o(unsigned short int pos) //Imprime a letra O
 {
-    if (pos>=0&&pos<=10)
+    if (pos<=10)
     {
         unsigned short int i;
         for(i=0; i<2; i++)
@@ -726,7 +726,7 @@ void letter_o(unsigned short int pos) //Imprime a letra O
 
 void letter_p(unsigned short int pos) //Imprime a letra P
 {
-    if (pos>=0&&pos<=10)
+    if (pos<=10)
     {
         unsigned short int i;
         for(i=0; i<2; i++)
@@ -759,7 +759,7 @@ void letter_p(unsigned short int pos) //Imprime a letra P
 
 void letter_q(unsigned short int pos) //Imprime a letra Q
 {
-    if (pos>=0&&pos<=10)
+    if (pos<=10)
     {
         unsigned short int i;
         for(i=0; i<2; i++)
@@ -802,7 +802,7 @@ void letter_q(unsigned short int pos) //Imprime a letra Q
 
 void letter_r(unsigned short int pos) //Imprime a letra R
 {
-    if (pos>=0&&pos<=10)
+    if (pos<=10)
     {
         unsigned short int i;
         for(i=0; i<2; i++)
@@ -844,7 +844,7 @@ void letter_r(unsigned short int pos) //Imprime a letra R
 
 void letter_s(unsigned short int pos) //Imprime a letra S
 {
-    if (pos>=0&&pos<=10)
+    if (pos<=10)
     {
         unsigned short int i;
         for(i=0; i<7; i++)
@@ -872,7 +872,7 @@ void letter_s(unsigned short int pos) //Imprime a letra S
 
 void letter_t(unsigned short int pos) //Imprime a letra T
 {
-    if (pos>=0&&pos<=10)
+    if (pos<=10)
     {
         unsigned short int i;
         for(i=0; i<3; i++)
@@ -900,7 +900,7 @@ void letter_t(unsigned short int pos) //Imprime a letra T
 
 void letter_u(unsigned short int pos) //Imprime a letra U
 {
-    if (pos>=0&&pos<=10)
+    if (pos<=10)
     {
         unsigned short int i;
         for(i=0; i<2; i++)
@@ -933,7 +933,7 @@ void letter_u(unsigned short int pos) //Imprime a letra U
 
 void letter_v(unsigned short int pos) //Imprime a letra V
 {
-    if (pos>=0&&pos<=10)
+    if (pos<=10)
     {
         unsigned short int i;
         glcd_gotoxy(f1,(ref)-(pos*10),0);
@@ -969,7 +969,7 @@ void letter_v(unsigned short int pos) //Imprime a letra V
 
 void letter_x(unsigned short int pos) //Imprime a letra X
 {
-    if (pos>=0&&pos<=10)
+    if (pos<=10)
     {
         glcd_gotoxy(f2,(ref)-(pos*10),0);
         glcd_write_data(0xE0,1);
@@ -1012,7 +1012,7 @@ void letter_x(unsigned short int pos) //Imprime a letra X
 
 void letter_w(unsigned short int pos) //Imprime a letra W
 {
-    if (pos>=0&&pos<=10)
+    if (pos<=10)
     {
         unsigned short int i;
         for(i=0; i<2; i++)
@@ -1050,7 +1050,7 @@ void letter_w(unsigned short int pos) //Imprime a letra W
 
 void letter_y(unsigned short int pos) //Imprime a letra Y
 {
-    if (pos>=0&&pos<=10)
+    if (pos<=10)
     {
         unsigned short int i;
         for(i=0; i<2; i++)
@@ -1088,7 +1088,7 @@ void letter_y(unsigned short int pos) //Imprime a letra Y
 
 void letter_z(unsigned short int pos) //Imprime a letra Z
 {
-    if (pos>=0&&pos<=10)
+    if (pos<=10)
     {
         unsigned short int i;
         for(i=0; i<4; i++)
@@ -1223,7 +1223,7 @@ void letter(unsigned short int letter, unsigned short int pos)
     /*Forma alternativa de escrever cada letra
         (utilizado para fazer efeito de "rolagem" do texto)*/
 
-    if(pos>=0&&pos<=10)
+    if(pos<=10)
     {
         switch(letter)
         {
