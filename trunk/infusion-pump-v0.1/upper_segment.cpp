@@ -1,4 +1,4 @@
-#include "msp430FG439.h"
+#include <msp430FG439.h>
 #include "GLCD.h"
 
 unsigned short int espaco = 131-24;
