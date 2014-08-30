@@ -1,5 +1,5 @@
 #include "GLCD.h"
-#include "msp430FG439.h"
+#include <msp430FG439.h>
 
 void nt7538_12864_writecommand(char x)
 {

@@ -520,7 +520,7 @@
         </option>
         <option>
           <name>OCGuardCallsSlave</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CompilerCodeModel</name>
@@ -762,7 +762,7 @@
         </option>
         <option>
           <name>XList</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>SegmentMap</name>
@@ -794,7 +794,7 @@
         </option>
         <option>
           <name>XclFile</name>
-          <state>$TOOLKIT_DIR$\CONFIG\lnk430FG437.xcl</state>
+          <state>$TOOLKIT_DIR$\config\linker\lnk430FG439.xcl</state>
         </option>
         <option>
           <name>XclFileSlave</name>
@@ -870,7 +870,7 @@
         </option>
         <option>
           <name>ModuleSummary</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>XlinkStackSize</name>
@@ -2151,6 +2151,15 @@
     </settings>
   </configuration>
   <group>
+    <name>Business</name>
+    <file>
+      <name>$PROJ_DIR$\infusion.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\INFUSION.h</name>
+    </file>
+  </group>
+  <group>
     <name>GUI</name>
     <file>
       <name>$PROJ_DIR$\DISPLAY.h</name>
@@ -2162,10 +2171,28 @@
       <name>$PROJ_DIR$\GLCD.h</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\segmento_inferior.cpp</name>
+      <name>$PROJ_DIR$\lower_segment.cpp</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\segmento_superior.cpp</name>
+      <name>$PROJ_DIR$\upper_segment.cpp</name>
+    </file>
+  </group>
+  <group>
+    <name>Motor</name>
+    <file>
+      <name>$PROJ_DIR$\motor.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\MOTOR.h</name>
+    </file>
+  </group>
+  <group>
+    <name>Time</name>
+    <file>
+      <name>$PROJ_DIR$\time.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\TIME.h</name>
     </file>
   </group>
   <file>
