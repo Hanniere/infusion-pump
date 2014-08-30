@@ -94,9 +94,9 @@ void letter_off(unsigned short int pos) //Apaga qualquer letra
     }
 }
 
-void letter_traco(unsigned short int pos)
+void letter_trace(unsigned short int pos)
 {
-    if (pos<=10)
+    if (pos<=5)
     {
         unsigned short int i;
         for (i=0; i<9; i++)
@@ -111,14 +111,13 @@ void letter_traco(unsigned short int pos)
 
 void letter_0(unsigned short int pos)
 {
-    if (pos<=10)
+    if (pos<=5)
     {
         unsigned short int i;
         glcd_gotoxy(f1,(ref)-(pos*10),0);
         glcd_write_data(0x0,1);
         glcd_gotoxy(f2,(ref)-(pos*10),0);
         glcd_write_data(0x0,1);
-
         glcd_gotoxy(f1,(ref-1)-(pos*10),0);
         glcd_write_data(0xFC,1);
         glcd_gotoxy(f2,(ref-1)-(pos*10),0);
@@ -147,42 +146,112 @@ void letter_0(unsigned short int pos)
 
 void letter_1(unsigned short int pos)
 {
-    if (pos<=10)
+    if (pos<=5)
     {
         unsigned short int i;
-        for (i=0; i<5; i++)
+        for (i=0; i<4; i++)
         {
-            glcd_gotoxy(f1,(ref-i)-(pos*10),0);
-            glcd_write_data(0x00,1);
             glcd_gotoxy(f2,(ref-i)-(pos*10),0);
             glcd_write_data(0x00,1);
         }
+        for (i=0;i<7;i++){
+            glcd_gotoxy(f1,(ref-i)-(pos*10),0);
+            glcd_write_data(0x00,1);
+        }            
+        glcd_gotoxy(f2,(ref-4)-(pos*10),0);
+        glcd_write_data(0x30,1);
         glcd_gotoxy(f2,(ref-5)-(pos*10),0);
-        glcd_write_data(0x32,1);
+        glcd_write_data(0x70,1);
         glcd_gotoxy(f2,(ref-6)-(pos*10),0);
-        glcd_write_data(0x62,1);
-        glcd_gotoxy(f2,(ref-7)-(pos*10),0);
-        glcd_write_data(0xE2,1);
+        glcd_write_data(0xE0,1);
         for (i=0; i<2; i++)
         {
-            glcd_gotoxy(f2,(ref-8-i)-(pos*10),0);
+            glcd_gotoxy(f2,(ref-7-i)-(pos*10),0);
             glcd_write_data(0xFF,1);
-        }
-        for (i=0; i<2; i++)
-        {
-            glcd_gotoxy(f1,(ref-8-i)-(pos*10),0);
+            glcd_gotoxy(f1,(ref-7-i)-(pos*10),0);
             glcd_write_data(0xFF,1);
-        }
+        } 
     }
 }
 
 void letter_2(unsigned short int pos)
 {
+    if (pos<=5)
+    {
+    unsigned short int i;
     glcd_gotoxy(f1,(ref)-(pos*10),0);
-    glcd_write_data(0x0,1);
+    glcd_write_data(0xFE,1);
     glcd_gotoxy(f2,(ref)-(pos*10),0);
-    glcd_write_data(0x0,1);
+    glcd_write_data(0xC0,1);
+    for (i=0;i<6;i++){
+        glcd_gotoxy(f2,(ref-1-i)-(pos*10),0);
+        glcd_write_data(0xC0,1);
+    }
+    glcd_gotoxy(f1,(ref-2)-(pos*10),0);
+    glcd_write_data(0xFF,1);
+    for (i=0;i<5;i++){
+        glcd_gotoxy(f1,(ref-3-i)-(pos*10),0);
+        glcd_write_data(0x83,1);
+    }
+    glcd_gotoxy(f2,(ref-7)-(pos*10),0);
+    glcd_write_data(0xFF,1);
+    glcd_gotoxy(f1,(ref-8)-(pos*10),0);
+    glcd_write_data(0x03,1);
+    glcd_gotoxy(f2,(ref-8)-(pos*10),0);
+    glcd_write_data(0xFF,1);
+    }
+}
 
+void letter_3(unsigned short int pos)
+{
+    unsigned short int i;
+    if (pos<=5)
+    {
+    for (i=0;i<7;i++){
+        glcd_gotoxy(f1,(ref-i)-(pos*10),0);
+        glcd_write_data(0x83,1);
+        glcd_gotoxy(f2,(ref-i)-(pos*10),0);
+        glcd_write_data(0xC1,1);
+    }
+    glcd_gotoxy(f1,(ref-7)-(pos*10),0);
+    glcd_write_data(0xFF,1);
+    glcd_gotoxy(f2,(ref-7)-(pos*10),0);
+    glcd_write_data(0xFF,1);
+    glcd_gotoxy(f1,(ref-8)-(pos*10),0);
+    glcd_write_data(0x7E,1);
+    glcd_gotoxy(f2,(ref-8)-(pos*10),0);
+    glcd_write_data(0x7E,1);
+    }
+}
+
+void letter_4(unsigned short int pos)
+{
+    unsigned short int i;
+    if (pos<=5)
+    {
+    for (i=0;i<2;i++){
+    glcd_gotoxy(f2,(ref)-(pos*10),0);
+    glcd_write_data(0xFF,1);
+    }
+    glcd_gotoxy(f1,(ref)-(pos*10),0);
+    glcd_write_data(0x00,1);
+    for (i=0;i<6;i++){
+        glcd_gotoxy(f1,(ref-1-i)-(pos*10),0);
+        glcd_write_data(0x00,1);
+    }
+    for (i=0;i<2;i++){
+        glcd_gotoxy(f1,(ref-7-i)-(pos*10),0);
+        glcd_write_data(0x00,1);
+    }
+    for (i=0;i<5;i++){
+        glcd_gotoxy(f2,(ref-2-i)-(pos*10),0);
+        glcd_write_data(0x01,1);
+    }
+    for (i=0;i<2;i++){
+        glcd_gotoxy(f2,(ref-7-i)-(pos*10),0);
+        glcd_write_data(0xFF,1); 
+    }
+    }
 }
 
 void letter_a(unsigned short int pos) //Imprime a letra A
@@ -1213,7 +1282,18 @@ unsigned short int convert_letter_number(char letter){
     break;
   case 'z': return 26;
   break;
-  
+  case '-': return 27;
+  break;
+  case ':': return 28;
+  break;
+  case '1': return 29;
+  break;
+  case '2': return 30;
+  break;        
+  case '3': return 31;
+  break;
+  case '4': return 32;
+  break;
   default: return 0;
   }
 }
@@ -1308,6 +1388,21 @@ void letter(unsigned short int letter, unsigned short int pos)
         case 26:
             letter_z(pos);
             break;
+        case 27:
+            letter_trace(pos);
+            break;
+        case 29:
+            letter_1(pos);
+         break;
+        case 30:
+            letter_2(pos);
+        break;
+        case 31:
+            letter_3(pos);
+        break;
+        case 32:
+            letter_4(pos);
+        break;
         }
     }
 }
