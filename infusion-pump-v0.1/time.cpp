@@ -41,7 +41,6 @@ __interrupt void Timer_A (void){
 				qtde_infundida_hr = 0.0;
 				//configura perfil de infusao da hr corrente
 				configura_hora_corrente(&perfil_basal1[horas]);
-				
 			}
 		}
 	}
