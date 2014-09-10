@@ -2153,7 +2153,7 @@
   <group>
     <name>Business</name>
     <file>
-      <name>$PROJ_DIR$\infusion.c</name>
+      <name>$PROJ_DIR$\infusion.cpp</name>
     </file>
     <file>
       <name>$PROJ_DIR$\INFUSION.h</name>
@@ -2180,7 +2180,7 @@
   <group>
     <name>Motor</name>
     <file>
-      <name>$PROJ_DIR$\motor.c</name>
+      <name>$PROJ_DIR$\motor.cpp</name>
     </file>
     <file>
       <name>$PROJ_DIR$\MOTOR.h</name>
@@ -2189,7 +2189,7 @@
   <group>
     <name>Time</name>
     <file>
-      <name>$PROJ_DIR$\time.c</name>
+      <name>$PROJ_DIR$\time.cpp</name>
     </file>
     <file>
       <name>$PROJ_DIR$\TIME.h</name>
