@@ -15,7 +15,6 @@
 #define LED2 BIT1
 #define LED3 BIT0
 
-float insulina = 0;
 
 void inicializa(){
 	
@@ -36,14 +35,15 @@ void inicializa(){
 	P4OUT = 0x00; // jogando sinal logico 0 em todos os pinos da porta 4
 	P4DIR |= BIT0 + BIT1 + BIT2 + BIT3; //Da problema BIT0 E BIT1
 
-	/*Configuracao para botao 1 simular infusao bolus */
+	
 	P3OUT = 0x00; // jogando sinal logico 0 em todos os pinos da porta 3
-	P3DIR |= LED1 + LED2 +LED3; // define pino do LED1 e LED2 e LED3 como saida
-	P3DIR &= ~BUTTON5; // define pino BUTTON5 como entrada
-    P3DIR &= ~BUTTON1; // define pino BUTTON1 como entrada
-    P3DIR &= ~BUTTON2; // define pino BUTTON2 como entrada
-	
-	
+    
+    // define pino do LED1 e LED2 e LED3 como saida
+    //Os demais pinos da P3 sao entrada por default
+	P3DIR |= LED1 + LED2 + LED3;
+    
+    
+
 	/*inicializacao de variaveis de contagem do tempo*/
 	tick = 0;
 	contador_intervalo = 0;
@@ -105,17 +105,52 @@ void numero_superior(float num){
     numero(dezena, 0);
     numero(unidade, 1);
     numero(fracionaria, 2);
-
   
 }
 
+float configure_basal(){
+      float insulina_unit = 0.0;
+      //escreve o valor 0.0 no segmento superior do display
+      numero_superior(insulina_unit);
+      
+      while(1){
+        __delay_cycles(150000);
+        
+        if((P3IN & BUTTON2)==0){ // botao pressionado retorna falso, pois coloca o pino no terra
+            P3OUT |= LED1; // ascende o LED1 enquanto o botao estiver pressionado
+            
+            if(insulina_unit > 0.0){
+                insulina_unit = insulina_unit - 0.1;
+                numero_superior(insulina_unit);
+            }
+            
+            P3OUT &= ~LED1;
+        }
+        
+         if((P3IN & BUTTON3)==0){
+            
+            P3OUT |= LED1; // ascende o LED1 enquanto o botao estiver pressionado
+            
+            if(insulina_unit <= 40.0){
+                insulina_unit = insulina_unit + 0.1;
+                numero_superior(insulina_unit);
+            }
+            
+            P3OUT &= ~LED1;
+         }
+        
+        //Confirma edicao da quantidade de unidades da infusao basal
+        if((P3IN & BUTTON5)==0){
+            return insulina_unit;
+        }
+	}  
+}
 void main(void) {
 	inicializa();
-       
+    float insulina = 0;  
 
     
     cout("1-234");
-    numero_superior(insulina);
    
     units(1);
     hours(1);
@@ -123,31 +158,27 @@ void main(void) {
     bolus(1);
     basal(1);
     
+    insulina = configure_basal();
+    
     while(1){
-        __delay_cycles(150000);
-        if(!(P3IN & BUTTON1)){ // botao pressionado retorna falso, pois coloca o pino no terra
-            P3OUT |= LED1; // ascende o LED1 enquanto o botao estiver pressionada
+      
             
-            if(insulina >= 0.0){
-                insulina -= 0.1;
-                numero_superior(insulina);
-            }
-            
-            P3OUT &= ~LED1;
-        }
-        
-         if(!(P3IN & BUTTON2)){
-            
-            P3OUT |= LED1; // ascende o LED1 enquanto o botao estiver pressionada
-            
-            if(insulina <= 40.0){
-                insulina += 0.1;
-                numero_superior(insulina);
-            }
-            
-            P3OUT &= ~LED1;
-         }
-	}
+      if((P3IN & BUTTON2) == 0){
+          configure_basal();
+      }
+      
+      //simula infusao bolus
+      if((P3IN & BUTTON5) == 0){ // se BUTTON5 estiver pressionado retorna falso pelo resistor de pull-up externo da placa
+          P3OUT |= LED1; // ascende o LED1 enquanto o botao estiver pressionada
+          flag_infusao_bolus = 1;
+      }
+      else{  // botao solto retorna verdadeiro, pois coloca liga novamente o pino
+          P3OUT &= ~LED1; // LED1 apagado
+          flag_infusao_bolus = 0;
+      }
+
+    
+    }
  
     
 }
