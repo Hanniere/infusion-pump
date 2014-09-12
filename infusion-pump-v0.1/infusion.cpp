@@ -15,9 +15,10 @@ short limite_intervalo;
 volatile short intervalo_inf_basal;
 short cont_inf_basal;
 
-short int perfil_basal1[QTDEPERFIS];
+float perfil_basal1[QTDEPERFIS];
 short int flag_infusao_basal;
 short int flag_infusao_bolus;
+short int flag_reverse_engine;
 float qtde_infusao_bolus;
 
 
@@ -63,16 +64,23 @@ void ativa_infusao() {
 	if(qtde_total_infusao != 0.0){
 		
 		int passos = (int) (FATOR * qtde_total_infusao);
-		gira_meio_passo(&passos);
+		half_pass_forward(&passos);
 		qtde_infundida_total += qtde_total_infusao;
 	}
+    
+    if(flag_reverse_engine == 1){
+    
+        int passos = (int) (FATOR * 0.1);
+		half_pass_backward(&passos);
+        flag_reverse_engine = 0;
+    }
 }
 
 
 /*funcao que calcula os intervalos de aplicacao de insulina
 de acordo com a quantidade minima da bomba e os segundos que faltam na hora
 corrente*/
-void configura_hora_corrente(const short int* unidades){
+void configura_hora_corrente(const float* unidades){
 	
 	/*Calcula-se os segundos restantes da hora corrente*/
 	int segundos_restantes = (60 - minutos)*60;

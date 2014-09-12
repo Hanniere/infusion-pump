@@ -5,17 +5,25 @@ unsigned short int halfstep[8] = {0x08, 0x0c, 0x04, 0x06, 0x02, 0x03, 0x01, 0x09
 
 
 /*Gira o motor no sentido horario de acordo com a quantidade de steps definido*/
-void gira_meio_passo(const int *steps){
-	short int i = 0;
-	int cont = 0;
+void half_pass_backward(const int *steps){
+	int i = 0;
 	
-	while(cont < *steps){
-		P4OUT = halfstep[i];
-		__delay_cycles(ESPERA);
-		i = (i+1)%8;
-		cont++;
+	for (i = 0; i < *steps; i++) {
+        P4OUT = halfstep[i%8];
+        __delay_cycles(ESPERA);
 	}
 	P4OUT = 0x00;
+}
+
+/*Gira o motor no sentido anti horario de acordo com a quantidade de steps definido*/
+void half_pass_forward(const int *steps){
+    int i = 0;
+    
+    for (i = *steps-1; i >= 0; i--) {
+        P4OUT = halfstep[i%8];
+        __delay_cycles(ESPERA);
+    }
+    P4OUT = 0x00;
 }
 
 

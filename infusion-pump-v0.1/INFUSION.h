@@ -9,7 +9,7 @@
 #define GRAUMINIMO 90
 
 /*Tamanho do vetor de perfil*/
-#define QTDEPERFIS 24
+#define QTDEPERFIS 1
 
 /*Fator de multiplicacao para calculo do numero de passos de acordo com unidades a serem infundidas*/
 #define FATOR (STEPSPORGRAU * GRAUMINIMO) / QTDEMININFUSAO
@@ -49,7 +49,7 @@ extern float qtde_infundida_hr;
 
 /*Perfil de utilizacao basal 1, cada posicao representa uma hora do dia*/
 /* Vetor responsavel por armazenar as quantidades em unidades para determinada hora*/
-extern short int perfil_basal1[QTDEPERFIS];
+extern float perfil_basal1[QTDEPERFIS];
 
 /*Conta quantidade de infusao minima do perfil basal para cada hora*/
 extern int conta_infusoes[QTDEPERFIS];
@@ -61,9 +61,11 @@ extern short int flag_infusao_bolus;
 /*Quantidade de infusao bolus setada pelo usuario*/
 extern float qtde_infusao_bolus;
 
+extern short int flag_reverse_engine;
+
 void ativa_infusao();
 
-void configura_hora_corrente(const short int*);
+void configura_hora_corrente(const float*);
 
 void verifica_infusao();
 

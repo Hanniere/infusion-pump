@@ -16,7 +16,8 @@ extern unsigned short int halfstep[8] ; // Sequencia para meio passo
 //extern unsigned int fullstep[8] = {0x09, 0x0c, 0x06, 0x03, 0x09, 0x0c, 0x06, 0x03}; // Sequencia para full step
 //extern unsigned int fullstepwave[8] = {0x08, 0x04, 0x02, 0x01, 0x08, 0x04, 0x02, 0x01}; // Sequencia para full step wave
 
-void gira_meio_passo(const int*);
+void half_pass_backward(const int*);
+void half_pass_forward(const int*);
 
 void giraHorarioSequenciaCheia(int);
 
