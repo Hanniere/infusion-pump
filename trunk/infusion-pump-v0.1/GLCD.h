@@ -46,6 +46,8 @@ void nt7538_12864_writecommand(char x);
 void glcd_setup();
 void glcd_turn_off();
 void glcd_turn_on();
+//deve-se chamar toda vez que ligar o lcd
 void glcd_fill(unsigned char data);
-void glcd_free();//Limpa toda a tela do GLCD
+//Limpa toda a tela do GLCD
+void glcd_free();
 

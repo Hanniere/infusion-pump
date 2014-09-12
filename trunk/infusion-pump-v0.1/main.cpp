@@ -51,6 +51,7 @@ void inicializa(){
 	/*Flags de infusao basal e bolus*/
 	flag_infusao_basal = 0;
 	flag_infusao_bolus = 0;
+    flag_reverse_engine = 0;
 	
 	intervalo_seg_real = 0.0;
 	intervalo_seg_inteiro = limite_intervalo = cont_inf_basal = 0;
@@ -64,34 +65,9 @@ void inicializa(){
 
 	/*simulando quantidade de insulina configurada por um usuario em perfil bolus*/
 	qtde_infusao_bolus = 0.1;
-	
-//	short int i = 0;
-//	/*inicializando perfil basal1 para simulacao*/
-//	for(i = 0; i < QTDEPERFIS; i++){
-//		conta_infusoes[i] = 0;
-//		/*9 unidades em uma hora, 0.1 a cada 4 segundos*/
-//		perfil_basal1[i] = 90;
-//	}
-//	
-//	/*configura o perfil basal corrente na respectiva hora da bomba*/
-//	configura_hora_corrente(&perfil_basal1[horas]);
     
-    /*Configurando timer para contagem de relogio*/
+    /*Configurando timer para iniciar a contagem de relogio*/
 	configura_timerA();
-
-}
-/*rotina de verificacao de aplicação de insulina bolus*/
-void verify_bolus(){
-    
-    if(P3IN & BUTTON5){ // se BUTTON5 estiver solto retorna verdadeiro pelo resistor de pull-up externo da placa
-        P3OUT &= ~LED1; // LED1 apagado
-    }
-    else{  // botao pressionado retorna falso, pois coloca o pino no terra
-        P3OUT |= LED1; // ascende o LED1 enquanto o botao estiver pressionada
-        flag_infusao_bolus = 1;
-    }
-    
-    //ativa_infusao();
 
 }
 
@@ -108,12 +84,17 @@ void numero_superior(float num){
   
 }
 
-float configure_basal(){
+void configure_basal(){
+      units(1);
+      hours(1);
+      basal(1);
       float insulina_unit = 0.0;
       //escreve o valor 0.0 no segmento superior do display
       numero_superior(insulina_unit);
       
       while(1){
+        //lembrar que esta havendo um delay      
+        ativa_infusao();
         __delay_cycles(150000);
         
         if((P3IN & BUTTON2)==0){ // botao pressionado retorna falso, pois coloca o pino no terra
@@ -131,7 +112,7 @@ float configure_basal(){
             
             P3OUT |= LED1; // ascende o LED1 enquanto o botao estiver pressionado
             
-            if(insulina_unit <= 40.0){
+            if(insulina_unit <= 90.0){
                 insulina_unit = insulina_unit + 0.1;
                 numero_superior(insulina_unit);
             }
@@ -141,43 +122,58 @@ float configure_basal(){
         
         //Confirma edicao da quantidade de unidades da infusao basal
         if((P3IN & BUTTON5)==0){
-            return insulina_unit;
+            
+            /*inicializando perfil basal1 para simulacao em apenas uma hora*/
+            conta_infusoes[0] = 0;
+            /*9 unidades em uma hora, 0.1 a cada 4 segundos*/
+            perfil_basal1[0] = insulina_unit;
+            /*configura o perfil basal corrente na respectiva hora da bomba*/
+            configura_hora_corrente(&perfil_basal1[0]);
+           
+            return ;
         }
 	}  
 }
+
 void main(void) {
 	inicializa();
-    float insulina = 0;  
 
-    
     cout("1-234");
    
-    units(1);
-    hours(1);
-    percent(1);
-    bolus(1);
-    basal(1);
     
-    insulina = configure_basal();
-    
-    while(1){
-      
-            
-      if((P3IN & BUTTON2) == 0){
-          configure_basal();
-      }
-      
-      //simula infusao bolus
-      if((P3IN & BUTTON5) == 0){ // se BUTTON5 estiver pressionado retorna falso pelo resistor de pull-up externo da placa
-          P3OUT |= LED1; // ascende o LED1 enquanto o botao estiver pressionada
-          flag_infusao_bolus = 1;
-      }
-      else{  // botao solto retorna verdadeiro, pois coloca liga novamente o pino
-          P3OUT &= ~LED1; // LED1 apagado
-          flag_infusao_bolus = 0;
-      }
+    // percent(1);
 
     
+
+    while(1){
+        //lembrar que esta havendo um delay para verificar se tem infusao basal
+        ativa_infusao();
+
+        //caso aperte o botao 2, configura infusao basal novamente     
+        if((P3IN & BUTTON5) == 0){
+            configure_basal();
+            units(0);
+            hours(0);
+            basal(0);
+            __delay_cycles(150000);
+        }
+        
+        //Botao para voltar o motor
+        if((P3IN & BUTTON2) == 0){
+            flag_reverse_engine = 1;
+        
+        }
+
+        //caso aperte o botao 5 simula infusao bolus
+        if((P3IN & BUTTON3) == 0){ // se BUTTON5 estiver pressionado retorna falso pelo resistor de pull-up externo da placa
+          P3OUT |= LED1; // ascende o LED1 enquanto o botao estiver pressionada
+          flag_infusao_bolus = 1;
+          bolus(1);
+        }
+        else{  // botao solto retorna verdadeiro, pois coloca liga novamente o pino
+          P3OUT &= ~LED1; // LED1 apagado
+          bolus(0);
+        }
     }
  
     
