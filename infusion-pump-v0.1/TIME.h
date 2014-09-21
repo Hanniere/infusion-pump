@@ -1,3 +1,15 @@
+/**************************************************************************************
+
+	Funcoes para contagem e configuracao do tempo.
+    
+
+	time.cpp
+	
+	Autor: Hanniere de Faria Veloso dos Santos
+	Data: julho, 2014
+
+
+********************************************************************************************/
 #ifndef _TIME_H_
 #define _TIME_H_
 

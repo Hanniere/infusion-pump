@@ -1,6 +1,28 @@
+/**************************************************************************************
+
+	Funcoes para que calculam intervalo de infusao e ativa infusoes basal
+    e bolus se necessario.
+
+	infusion.cpp
+	
+	Autor: Hanniere de Faria Veloso dos Santos
+	Data: julho, 2014
+
+
+********************************************************************************************/
 #ifndef INFUSAO_INCLUDED
 #define INFUSAO_INCLUDED
 
+
+#define BUTTON1 BIT7
+#define BUTTON2 BIT6
+#define BUTTON3 BIT5
+#define BUTTON4 BIT4
+#define BUTTON5 BIT3
+
+#define LED1 BIT2
+#define LED2 BIT1
+#define LED3 BIT0
 
 /*Definicao da quantidade minima de infusao da bomba*/
 #define QTDEMININFUSAO 0.1
@@ -9,7 +31,7 @@
 #define GRAUMINIMO 90
 
 /*Tamanho do vetor de perfil*/
-#define QTDEPERFIS 1
+#define DAY_HOURS 3
 
 /*Fator de multiplicacao para calculo do numero de passos de acordo com unidades a serem infundidas*/
 #define FATOR (STEPSPORGRAU * GRAUMINIMO) / QTDEMININFUSAO
@@ -49,10 +71,10 @@ extern float qtde_infundida_hr;
 
 /*Perfil de utilizacao basal 1, cada posicao representa uma hora do dia*/
 /* Vetor responsavel por armazenar as quantidades em unidades para determinada hora*/
-extern float perfil_basal1[QTDEPERFIS];
+extern float active_basal_profile[DAY_HOURS];
 
 /*Conta quantidade de infusao minima do perfil basal para cada hora*/
-extern int conta_infusoes[QTDEPERFIS];
+extern int conta_infusoes[DAY_HOURS];
 
 /*0 caso nao deva ocorrer infusao, 1 caso deva ocorrer*/
 extern short int flag_infusao_basal;
@@ -66,6 +88,8 @@ extern short int flag_reverse_engine;
 void ativa_infusao();
 
 void configura_hora_corrente(const float*);
+
+void configure_ative_basal_profile();
 
 void verifica_infusao();
 
