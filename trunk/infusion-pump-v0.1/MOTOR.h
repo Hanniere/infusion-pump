@@ -1,3 +1,14 @@
+/**************************************************************************************
+
+	Funcoes para configuracao e ativacao do motor de passos.
+
+	motor.cpp
+	
+	Autor: Hanniere de Faria Veloso dos Santos
+	Data: setembro, 2014
+
+
+********************************************************************************************/
 #ifndef MOTOR_INCLUDED
 #define MOTOR_INCLUDED
 

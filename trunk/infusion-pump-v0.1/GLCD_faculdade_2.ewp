@@ -2158,6 +2158,12 @@
     <file>
       <name>$PROJ_DIR$\INFUSION.h</name>
     </file>
+    <file>
+      <name>$PROJ_DIR$\msp_flash.cpp</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\MSP_FLASH.h</name>
+    </file>
   </group>
   <group>
     <name>GUI</name>

@@ -1,21 +1,25 @@
+#include <msp430FG439.h>
 #include "INFUSION.h"
 #include "TIME.h"
 #include "MOTOR.h"
-#include "math.h"
+#include "DISPLAY.h"
+#include <math.h>
+
+
 
 
 int qtd_infusoes_hr;
 short contador_intervalo;
 float qtde_infundida_total;
 float qtde_infundida_hr;
-int conta_infusoes[QTDEPERFIS];
+int conta_infusoes[DAY_HOURS];
 float intervalo_seg_real;
 int intervalo_seg_inteiro;
 short limite_intervalo;
 volatile short intervalo_inf_basal;
 short cont_inf_basal;
 
-float perfil_basal1[QTDEPERFIS];
+float active_basal_profile[DAY_HOURS];
 short int flag_infusao_basal;
 short int flag_infusao_bolus;
 short int flag_reverse_engine;
@@ -76,6 +80,63 @@ void ativa_infusao() {
     }
 }
 
+//funcao que configura o perfil basal ativo para as 24 horas do dia DAY_HOURS
+void configure_ative_basal_profile(){
+      units(1);
+      hours(1);
+      basal(1);
+      unsigned short i = 0;
+      float insulina_unit = 0.0;
+           
+      
+      for(i=0 ; i < DAY_HOURS; i++){
+            
+        insulina_unit = active_basal_profile[i];
+        /*Escreve o valor no segmento superior salvo no vetor de profile*/
+        upper_number_float(insulina_unit);
+          
+        while(1){
+            //lembrar que esta havendo um delay      
+            ativa_infusao();
+            __delay_cycles(150000);
+
+            if((P3IN & BUTTON2)==0){ // botao pressionado retorna falso, pois coloca o pino no terra
+                P3OUT |= LED1; // ascende o LED1 enquanto o botao estiver pressionado
+                
+                if(insulina_unit > 0.0){
+                    insulina_unit = insulina_unit - 0.1;
+                    upper_number_float(insulina_unit);
+                }
+                
+                P3OUT &= ~LED1;
+            }
+
+             if((P3IN & BUTTON3)==0){
+                
+                P3OUT |= LED1; // ascende o LED1 enquanto o botao estiver pressionado
+                
+                if(insulina_unit <= 90.0){
+                    insulina_unit = insulina_unit + 0.1;
+                    upper_number_float(insulina_unit);
+                }
+                
+                P3OUT &= ~LED1;
+             }
+
+            //Confirma edicao da quantidade de unidades da infusao basal para cada hora
+            if((P3IN & BUTTON5)==0){
+                
+                /*inicializando perfil basal1 para simulacao em apenas uma hora*/
+                conta_infusoes[i] = 0;
+                /*9 unidades em uma hora, 0.1 a cada 4 segundos*/
+                active_basal_profile[i] = insulina_unit;
+                /*Sai do while*/
+                break;
+            }
+        }
+        
+    }
+}
 
 /*funcao que calcula os intervalos de aplicacao de insulina
 de acordo com a quantidade minima da bomba e os segundos que faltam na hora

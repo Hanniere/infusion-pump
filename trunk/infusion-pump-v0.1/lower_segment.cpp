@@ -1,6 +1,5 @@
-#include <msp430FG439.h>
 #include "GLCD.h"
-#define TAMANHO_FRASE 15
+#include "DISPLAY.h"
 
 unsigned short int ref = 92;//max=124
 char f1 = 1;//Representa a segunda linha de baixo para cima do display.
@@ -1407,7 +1406,7 @@ void letter(unsigned short int letter, unsigned short int pos)
     }
 }
 
-void write_data(char phrase[TAMANHO_FRASE])
+void write_data(unsigned char phrase[TAMANHO_FRASE])
 {
     unsigned short int i, letra,j, contador, dif;
     contador = 1;
@@ -1450,6 +1449,6 @@ void write_data(char phrase[TAMANHO_FRASE])
     }
 }
 
-void cout(char frase[TAMANHO_FRASE]){//saida simplificada da frase, chama a funcao write_data_menu.
+void cout(unsigned char frase[TAMANHO_FRASE]){//saida simplificada da frase, chama a funcao write_data_menu.
   write_data(frase);
 }

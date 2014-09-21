@@ -1,5 +1,6 @@
-#include <msp430FG439.h>
 #include "GLCD.h"
+#include "DISPLAY.h"
+#include <math.h>
 
 unsigned short int espaco = 131-24;
 char f3 = 5;
@@ -704,6 +705,29 @@ void numero(unsigned short int numero, unsigned short int pos)
     faixa3(numero,pos);
     faixa4(numero,pos);
     faixa5(numero,pos);
+}
+
+void upper_number_float(float num){
+
+    unsigned short dezena = 0;
+    unsigned short unidade = 0;
+    unsigned short fracionaria = 0;
+
+
+    fracionaria = (unsigned short) round((num - (unsigned short) num) * 10);
+
+    if(fracionaria > 9){
+        fracionaria = 0;
+        num = round(num);
+    }
+
+    dezena = (unsigned short)(num / 10);
+    unidade = (unsigned short)((unsigned short)num % 10);
+    
+    numero(dezena, 0);
+    numero(unidade, 1);
+    numero(fracionaria, 2);
+  
 }
 
 void units_on()
