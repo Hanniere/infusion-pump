@@ -24,3 +24,10 @@ void basal(unsigned short mode);
 void point(unsigned short mode);
 //inferior
 void cout(unsigned char frase[TAMANHO_FRASE]);
+//simbolos de suporte - posiçao: inferior
+void battery(float percent);//representa a quantidade de carga da bateria
+void syringe(unsigned short int mode);//precisa mudar! funcionará como a bateria
+void stop(unsigned short int mode);
+void arrow(unsigned short int mode);
+void clock(unsigned short int mode);
+void bell(unsigned short int mode);
