@@ -15,30 +15,32 @@ void faixa1(unsigned short int numero, unsigned short int pos)
         glcd_gotoxy(f5,espaco-5-(31*pos),0);
         glcd_write_data(0x3F,1);
         glcd_gotoxy(f5,espaco-6-(31*pos),0);
-        glcd_write_data(0xDF,1);
+        glcd_write_data(0x5F,1);
         glcd_gotoxy(f5,espaco-7-(31*pos),0);
-        glcd_write_data(0xEF,1);
+        glcd_write_data(0x6F,1);
         glcd_gotoxy(f5,espaco-8-(31*pos),0);
-        glcd_write_data(0xF7,1);
+        glcd_write_data(0x77,1);
         glcd_gotoxy(f5,espaco-9-(31*pos),0);
-        glcd_write_data(0xFB,1);
+        glcd_write_data(0x7B,1);
         glcd_gotoxy(f5,espaco-10-(31*pos),0);
-        glcd_write_data(0xFC,1);
+        glcd_write_data(0x7C,1);
         for(i=0; i<10; i++)
         {
             glcd_gotoxy(f5,espaco-11-i-(31*pos),0);
-            glcd_write_data(0xFE,1);
+            glcd_write_data(0x7E,1);
         }
         glcd_gotoxy(f5,espaco-21-(31*pos),0);
-        glcd_write_data(0xFC,1);
+        glcd_write_data(0x7C,1);
         glcd_gotoxy(f5,espaco-22-(31*pos),0);
-        glcd_write_data(0xF8,1);
+        glcd_write_data(0x78,1);
         glcd_gotoxy(f5,espaco-23-(31*pos),0);
-        glcd_write_data(0xF0,1);
+        glcd_write_data(0x70,1);
         glcd_gotoxy(f5,espaco-24-(31*pos),0);
-        glcd_write_data(0xE0,1);
+        glcd_write_data(0x60,1);
         glcd_gotoxy(f5,espaco-25-(31*pos),0);
-        glcd_write_data(0xC0,1);
+        glcd_write_data(0x40,1);
+        glcd_gotoxy(f5,espaco-26-(31*pos),0);
+        glcd_write_data(0x00,1);
     }
     else
     {
@@ -47,30 +49,30 @@ void faixa1(unsigned short int numero, unsigned short int pos)
             glcd_gotoxy(f5,espaco-5-(31*pos),0);
             glcd_write_data(0x3F,1);
             glcd_gotoxy(f5,espaco-6-(31*pos),0);
-            glcd_write_data(0xDF,1);
+            glcd_write_data(0x5F,1);
             glcd_gotoxy(f5,espaco-7-(31*pos),0);
-            glcd_write_data(0xEF,1);
+            glcd_write_data(0x6F,1);
             glcd_gotoxy(f5,espaco-8-(31*pos),0);
-            glcd_write_data(0xF7,1);
+            glcd_write_data(0x77,1);
             glcd_gotoxy(f5,espaco-9-(31*pos),0);
-            glcd_write_data(0xFB,1);
+            glcd_write_data(0x7B,1);
             glcd_gotoxy(f5,espaco-10-(31*pos),0);
-            glcd_write_data(0xFC,1);
+            glcd_write_data(0x7C,1);
             for(i=0; i<10; i++)
             {
                 glcd_gotoxy(f5,espaco-11-i-(31*pos),0);
-                glcd_write_data(0xFE,1);
+                glcd_write_data(0x7E,1);
             }
             glcd_gotoxy(f5,espaco-21-(31*pos),0);
-            glcd_write_data(0xFC,1);
+            glcd_write_data(0x7C,1);
             glcd_gotoxy(f5,espaco-22-(31*pos),0);
-            glcd_write_data(0xFB,1);
+            glcd_write_data(0x7B,1);
             glcd_gotoxy(f5,espaco-23-(31*pos),0);
-            glcd_write_data(0xF7,1);
+            glcd_write_data(0x77,1);
             glcd_gotoxy(f5,espaco-24-(31*pos),0);
-            glcd_write_data(0xEF,1);
+            glcd_write_data(0x6F,1);
             glcd_gotoxy(f5,espaco-25-(31*pos),0);
-            glcd_write_data(0xDF,1);
+            glcd_write_data(0x5F,1);
             glcd_gotoxy(f5,espaco-26-(31*pos),0);
             glcd_write_data(0x3F,1);
         }
@@ -81,30 +83,30 @@ void faixa1(unsigned short int numero, unsigned short int pos)
                 glcd_gotoxy(f5,espaco-5-(31*pos),0);
                 glcd_write_data(0x0,1);
                 glcd_gotoxy(f5,espaco-6-(31*pos),0);
-                glcd_write_data(0xC0,1);
+                glcd_write_data(0x40,1);
                 glcd_gotoxy(f5,espaco-7-(31*pos),0);
-                glcd_write_data(0xE0,1);
+                glcd_write_data(0x60,1);
                 glcd_gotoxy(f5,espaco-8-(31*pos),0);
-                glcd_write_data(0xF0,1);
+                glcd_write_data(0x70,1);
                 glcd_gotoxy(f5,espaco-9-(31*pos),0);
-                glcd_write_data(0xF8,1);
+                glcd_write_data(0x78,1);
                 glcd_gotoxy(f5,espaco-10-(31*pos),0);
-                glcd_write_data(0xFC,1);
+                glcd_write_data(0x7C,1);
                 for(i=0; i<10; i++)
                 {
                     glcd_gotoxy(f5,espaco-11-i-(31*pos),0);
-                    glcd_write_data(0xFE,1);
+                    glcd_write_data(0x7E,1);
                 }
                 glcd_gotoxy(f5,espaco-21-(31*pos),0);
-                glcd_write_data(0xFC,1);
+                glcd_write_data(0x7C,1);
                 glcd_gotoxy(f5,espaco-22-(31*pos),0);
-                glcd_write_data(0xFB,1);
+                glcd_write_data(0x7B,1);
                 glcd_gotoxy(f5,espaco-23-(31*pos),0);
-                glcd_write_data(0xF7,1);
+                glcd_write_data(0x77,1);
                 glcd_gotoxy(f5,espaco-24-(31*pos),0);
-                glcd_write_data(0xEF,1);
+                glcd_write_data(0x6F,1);
                 glcd_gotoxy(f5,espaco-25-(31*pos),0);
-                glcd_write_data(0xDF,1);
+                glcd_write_data(0x5F,1);
                 glcd_gotoxy(f5,espaco-26-(31*pos),0);
                 glcd_write_data(0x3F,1);
             }
@@ -333,9 +335,9 @@ void faixa3(unsigned short int numero, unsigned short int pos)
                         glcd_write_data(0x7E,1);
                     }
                     glcd_gotoxy(f3,espaco-22-(31*pos),0);
-                    glcd_write_data(0x81,1);
+                    glcd_write_data(0xBD,1);
                     glcd_gotoxy(f3,espaco-23-(31*pos),0);
-                    glcd_write_data(0xC3,1);
+                    glcd_write_data(0xDB,1);
                     for (i=0; i<3; i++)
                     {
                         glcd_gotoxy(f3,espaco-24-i-(31*pos),0);
@@ -361,9 +363,9 @@ void faixa3(unsigned short int numero, unsigned short int pos)
                             glcd_write_data(0x7E,1);
                         }
                         glcd_gotoxy(f3,espaco-22-(31*pos),0);
-                        glcd_write_data(0x81,1);
+                        glcd_write_data(0xBD,1);
                         glcd_gotoxy(f3,espaco-23-(31*pos),0);
-                        glcd_write_data(0xC3,1);
+                        glcd_write_data(0xDB,1);
                         for (i=0; i<3; i++)
                         {
                             glcd_gotoxy(f3,espaco-24-i-(31*pos),0);
@@ -410,9 +412,9 @@ void faixa3(unsigned short int numero, unsigned short int pos)
 
                                 }
                                 glcd_gotoxy(f3,espaco-8-(31*pos),0);
-                                glcd_write_data(0xC3,1);
+                                glcd_write_data(0xDB,1);
                                 glcd_gotoxy(f3,espaco-9-(31*pos),0);
-                                glcd_write_data(0x81,1);
+                                glcd_write_data(0xBD,1);
                                 for(i=0; i<12; i++)
                                 {
 
@@ -795,7 +797,7 @@ void hours_on()
 void hours_off()
 {
     unsigned short int i;
-    for(i=0; i<9; i++)
+    for(i=0; i<12; i++)
     {
         glcd_gotoxy(f4,espaco-30-i-(31*2),0);
         glcd_write_data(0x0,1);
@@ -927,12 +929,12 @@ void bolus_off()
     char f1 = 3;
     char f2 = 4;
     unsigned short int i;
-    for(i=0; i<9; i++)
+    for(i=0; i<10; i++)
     {
         glcd_gotoxy(f2,espaco-i,0);
         glcd_write_data(0x0,1);
     }
-    for(i=0; i<9; i++)
+    for(i=0; i<10; i++)
     {
         glcd_gotoxy(f1,espaco-i,0);
         glcd_write_data(0x0,1);
