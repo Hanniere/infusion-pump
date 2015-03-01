@@ -2180,6 +2180,9 @@
       <name>$PROJ_DIR$\lower_segment.cpp</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\support_symbols.cpp</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\upper_segment.cpp</name>
     </file>
   </group>
