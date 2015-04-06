@@ -9,6 +9,7 @@
 
 void save_active_basal_profile();
 void load_active_basal_profile();
+void initialize_active_basal_profile();
 
 void inicializa(){
 	
@@ -23,13 +24,18 @@ void inicializa(){
     /*Inicializacao do GLCD*/
     glcd_turn_on();
 	glcd_fill(0);
-    point(1);
-	upper_number_float(0);
+    
     
 	/*Configuracao dos pinos de saida do motor*/
 	P4OUT = 0x00; // jogando sinal logico 0 em todos os pinos da porta 4
-	P4DIR |= BIT0 + BIT1 + BIT2 + BIT3; //Da problema BIT0 E BIT1
-
+    P5OUT = 0x00;// jogando sinal logico 0 em todos os pinos da porta 5
+    
+    /*Coloca pinos 0, 1, 2, 3 como saida para o motor*/
+	//P4DIR |= BIT0 + BIT1 + BIT2 + BIT3; //Da problema BIT0 E BIT1
+    
+    /*Coloca pinos 6, 7 da porta 4 como saida e 0, 1 da porta 5 para o motor*/
+    P4DIR |= BIT6 + BIT7; 
+    P5DIR |= BIT0 + BIT1;
 	
 	P3OUT = 0x00; // jogando sinal logico 0 em todos os pinos da porta 3
     
@@ -69,12 +75,22 @@ void inicializa(){
     }
     
     /*Carrega para o vetor de perfil basal ativo os valores do vetor que representa a memoria*/
-    load_active_basal_profile();
+    //load_active_basal_profile();
+    
+    //initialize_active_basal_profile();
     
 
     /*Configurando timer para iniciar a contagem de relogio*/
-	configura_timerA();
+    configura_timerA();
 
+}
+
+void initialize_active_basal_profile(){
+    unsigned short i = 0;
+
+    for(i = 0; i < DAY_HOURS; i++){
+        active_basal_profile[i] = (float) 0.1;
+    }
 }
 
 void load_active_basal_profile(){
@@ -103,13 +119,28 @@ void save_active_basal_profile(){
 
 void main(void) {
     inicializa();
+      //giraHorarioSequenciaCheia(409600);
+    //giraAntiSequenciaCheia(409600);
+    //giraHorarioSequenciaCheia(409600);
+    battery(0.65);
+    syringe(1);
+    //clock(1);
+    basal(1);
+    //bell(1);
+    //arrow(1);
+    //stop(1);
+    cout("home");
+    //units(1);
+    //hours(1);
+    //point(1);
+    //upper_number_float(0.6);
     //percent(1);
 
    while(1){
        //lembrar que esta havendo um delay para verificar se tem infusao basal
-       //ativa_infusao();
+       ativa_infusao();
 
-       //caso aperte o botao 2, configura infusao basal novamente     
+       //caso aperte o botao 5, configura infusao basal novamente     
        if((P3IN & BUTTON5) == 0){
            configure_ative_basal_profile();
            save_active_basal_profile();
@@ -127,7 +158,7 @@ void main(void) {
            flag_reverse_engine = 1;        
        }
 
-       //caso aperte o botao 5 simula infusao bolus
+       //caso aperte o botao 3 simula infusao bolus
        if((P3IN & BUTTON3) == 0){ // se BUTTON5 estiver pressionado retorna falso pelo resistor de pull-up externo da placa
          P3OUT |= LED1; // ascende o LED1 enquanto o botao estiver pressionada
          flag_infusao_bolus = 1;

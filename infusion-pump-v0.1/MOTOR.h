@@ -13,7 +13,7 @@
 #define MOTOR_INCLUDED
 
 /*Velocidade do motor de passo, espera 900 ciclos da CPU para executar a proxima instrução*/
-#define ESPERA 900
+#define ESPERA 2000
 
 /*Qtde de steps por grau*/
 #define STEPSPORGRAU 11.4
@@ -30,6 +30,7 @@ extern unsigned short int halfstep[8] ; // Sequencia para meio passo
 void half_pass_backward(const int*);
 void half_pass_forward(const int*);
 
-void giraHorarioSequenciaCheia(int);
+void giraHorarioSequenciaCheia(long int steps);
+void giraAntiSequenciaCheia(long int steps);
 
 #endif // MOTOR_INCLUDED
