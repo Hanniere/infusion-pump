@@ -31,7 +31,7 @@
 #define GRAUMINIMO 90
 
 /*Tamanho do vetor de perfil*/
-#define DAY_HOURS 3
+#define DAY_HOURS 24
 
 /*Fator de multiplicacao para calculo do numero de passos de acordo com unidades a serem infundidas*/
 #define FATOR (STEPSPORGRAU * GRAUMINIMO) / QTDEMININFUSAO
@@ -41,27 +41,11 @@
 ex: 900 infusoes de 0.1 unidades ao longo de uma hora*/
 extern int qtd_infusoes_hr;
 
-/*intervalo real em segundos para infusao minima de insulina*
-ex: a cada 200 segundos, aplica-se 0.1 unidades*/
-extern float intervalo_seg_real;
-
-/*Variavel que auxilia na distribuicao de insulina ao longo de uma hora
-  esta variavel */
-extern int intervalo_seg_inteiro;
-
 /*Segundos de uma hora, conta ate o intervalo de infusao. Intervalo maximo é 127 segundos*/
-extern short contador_intervalo;
-
-/*Intervalo em segundos que deve-se somar 1 ao intervalo_inf_basal*/
-extern short limite_intervalo;
+extern unsigned int contador_intervalo;
 
 /*Intervalo que o contador_intervalo deve chegar antes de infundir*/
-extern volatile short intervalo_inf_basal;
-
-/*Contador auxiliar do numero de infusao basal, este contador e utilizando
-para contar ate o limite_intervalo e assim soma-se 1s ao intervalo_inf_basal e 
-assim sucessivamente*/
-extern short cont_inf_basal;
+extern unsigned int intervalo_inf_basal;
 
 /*Qtde insulina ja infundida ao todo*/
 extern float qtde_infundida_total;
@@ -89,7 +73,7 @@ void ativa_infusao();
 
 void configura_hora_corrente(const float*);
 
-void configure_ative_basal_profile();
+void configure_active_basal_profile();
 
 void verifica_infusao();
 

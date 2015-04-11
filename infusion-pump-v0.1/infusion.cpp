@@ -3,21 +3,18 @@
 #include "TIME.h"
 #include "MOTOR.h"
 #include "DISPLAY.h"
-#include <math.h>
+#include "stdio.h"
+#include <string.h>
 
 
 
 
 int qtd_infusoes_hr;
-short contador_intervalo;
 float qtde_infundida_total;
 float qtde_infundida_hr;
 int conta_infusoes[DAY_HOURS];
-float intervalo_seg_real;
-int intervalo_seg_inteiro;
-short limite_intervalo;
-volatile short intervalo_inf_basal;
-short cont_inf_basal;
+unsigned int intervalo_inf_basal;
+unsigned int contador_intervalo;
 
 float active_basal_profile[DAY_HOURS];
 short int flag_infusao_basal;
@@ -32,9 +29,10 @@ void verifica_infusao(){
 	contador_intervalo++;
 	/*caso tenha chegado no intervalo que deve ocorrer a infusao*/
 	if(contador_intervalo == intervalo_inf_basal){
-		cont_inf_basal++;
 		conta_infusoes[horas]++;
-		flag_infusao_basal = 1;
+		if(!qtde_infundida_hr >= active_basal_profile[horas]){
+			flag_infusao_basal = 1;
+		}
 		contador_intervalo = 0;
 	}
 }
@@ -52,12 +50,6 @@ void ativa_infusao() {
 		/*atualizando quantidade de insulina infundida na hora corrente*/
 		qtde_infundida_hr += QTDEMININFUSAO;
 
-		/*Caso o numero de vezes infundido, tenha atingido limite_intervalo*/
-		if((cont_inf_basal == limite_intervalo) && limite_intervalo != 0){
-			cont_inf_basal = -1;
-			intervalo_inf_basal = intervalo_seg_inteiro + 1;
-		}
-		else intervalo_inf_basal = intervalo_seg_inteiro;
 	}
 	
 	if(flag_infusao_bolus == 1){
@@ -81,23 +73,30 @@ void ativa_infusao() {
 }
 
 //funcao que configura o perfil basal ativo para as 24 horas do dia DAY_HOURS
-void configure_ative_basal_profile(){
+void configure_active_basal_profile(){
       units(1);
       hours(1);
       basal(1);
+      point(1);
       unsigned short i = 0;
       float insulina_unit = 0.0;
-           
+      
       
       for(i=0 ; i < DAY_HOURS; i++){
-            
+    
         insulina_unit = active_basal_profile[i];
         /*Escreve o valor no segmento superior salvo no vetor de profile*/
         upper_number_float(insulina_unit);
-          
+        
+        char cBuffer[2] = {0};
+        sprintf(cBuffer, "%d", i);
+
+        cout((unsigned char*)strcat(cBuffer,"hr"));
+        
         while(1){
-            //lembrar que esta havendo um delay      
+            //lembrar que esta havendo um delay     
             ativa_infusao();
+            
             __delay_cycles(150000);
 
             if((P3IN & BUTTON2)==0){ // botao pressionado retorna falso, pois coloca o pino no terra
@@ -128,14 +127,21 @@ void configure_ative_basal_profile(){
                 
                 /*inicializando perfil basal1 para simulacao em apenas uma hora*/
                 conta_infusoes[i] = 0;
+                
                 /*9 unidades em uma hora, 0.1 a cada 4 segundos*/
                 active_basal_profile[i] = insulina_unit;
+        
                 /*Sai do while*/
                 break;
             }
         }
         
     }
+    cout("home");
+    units(0);
+    hours(0);
+    basal(0);
+    point(0);
 }
 
 /*funcao que calcula os intervalos de aplicacao de insulina
@@ -143,33 +149,23 @@ de acordo com a quantidade minima da bomba e os segundos que faltam na hora
 corrente*/
 void configura_hora_corrente(const float* unidades){
 	
-	/*Calcula-se os segundos restantes da hora corrente*/
-	int segundos_restantes = (60 - minutos)*60;
-	
+    unsigned int intervalo_seg_inteiro;
+    
+	/*Statement separado por causa do acesso a duas variavels "volatile" no mesmo stament*/
+    short int segundos_minuto = (60 - segundos);
+    
+    /*Calcula-se os segundos restantes da hora corrente*/
+	int segundos_restantes = (60 - minutos)*60 + segundos_minuto;
+
 	/*Quantidade que falta de insulina*/
 	float insulina_restante_hr = *unidades - qtde_infundida_hr;
-	
+
 	/*Retorna numero de infusoes que devem ser feitas em uma hora
 	exemplo: 3unidades/0.1 = 30 infusoes em uma hora.*/
 	qtd_infusoes_hr = (int)(insulina_restante_hr/QTDEMININFUSAO);
-	
-	/*intervalo em segundos que faltam na hora corrente para aplicacao da 
-	qtde minima de infusao ex: 7.2s*/
-	intervalo_seg_real = (float)segundos_restantes/qtd_infusoes_hr;
 
 	/*Pega parte inteira do intervalo ex: 7 */
-	intervalo_seg_inteiro = (int)intervalo_seg_real;
-
-	/*Pega parte fracionaria do intervalo ex: 0.2*/
-	float decimo_intervalo = (float)intervalo_seg_real-intervalo_seg_inteiro;
-
-	/*Obtem a quantidade de vezes para se trocar o valor do intervalo_inf_basal alternadamente*/
-	if(decimo_intervalo > 0.0){
-		limite_intervalo = (int)round(1 / decimo_intervalo);
-	}
-	else{
-		limite_intervalo = 0;
-	}
+	intervalo_seg_inteiro = (unsigned int)(segundos_restantes/qtd_infusoes_hr);
 
 	/*Intervalo de infusao, comeca com o valor calculado*/
 	intervalo_inf_basal = intervalo_seg_inteiro;

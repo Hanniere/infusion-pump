@@ -10,8 +10,9 @@
 void save_active_basal_profile();
 void load_active_basal_profile();
 void initialize_active_basal_profile();
+unsigned short validate_active_basal_profile();
 
-void inicializa(){
+void initialize(){
 	
 	WDTCTL = WDTPW + WDTHOLD; // Parando watchdog timer
     FLL_CTL0 |= XCAP18PF; // Set load capacitance for xtal
@@ -52,9 +53,6 @@ void inicializa(){
 	flag_infusao_bolus = 0;
     flag_reverse_engine = 0;
 	
-	intervalo_seg_real = 0.0;
-	intervalo_seg_inteiro = limite_intervalo = cont_inf_basal = 0;
-	
 	/*simulando as horas da bomba e consumo ate o momento*/
 	horas = 0;
 	minutos = 0;
@@ -68,20 +66,12 @@ void inicializa(){
     /*Le 128 bytes do segmento A e joga para o vetor que representa a memoria*/
     ReadFlash(SEG_A, segmentA_memory, TAM_SEG);
     
-    /*Inicializando vetor do perfil basal ativo*/
-    unsigned short i = 0;
-    for(i = 0; i < DAY_HOURS; i++){
-        active_basal_profile[i] = 0.0;
-    }
-    
     /*Carrega para o vetor de perfil basal ativo os valores do vetor que representa a memoria*/
-    //load_active_basal_profile();
-    
-    //initialize_active_basal_profile();
-    
-
+    load_active_basal_profile();
+    initialize_active_basal_profile();    
     /*Configurando timer para iniciar a contagem de relogio*/
     configura_timerA();
+    upper_number_float(0.0);
 
 }
 
@@ -97,7 +87,15 @@ void load_active_basal_profile(){
     unsigned short i = 0;
 
     for(i = 0; i < DAY_HOURS; i++){
-        active_basal_profile[i] =  (unsigned short)segmentA_memory[(i*2)] + (float)(segmentA_memory[(i*2)+1])/10;
+		
+//		if(!isdigit(segmentA_memory[(i*2)]) || !isdigit(segmentA_memory[(i*2)+1])){
+//			initialize_active_basal_profile();
+//			return;
+//		}
+//        else
+			active_basal_profile[i] =  (unsigned short)segmentA_memory[(i*2)] + (float)(segmentA_memory[(i*2)+1])/10;
+           // printf();
+		
     }
 }
 
@@ -118,7 +116,7 @@ void save_active_basal_profile(){
 }
 
 void main(void) {
-    inicializa();
+    initialize();
       //giraHorarioSequenciaCheia(409600);
     //giraAntiSequenciaCheia(409600);
     //giraHorarioSequenciaCheia(409600);
@@ -142,20 +140,23 @@ void main(void) {
 
        //caso aperte o botao 5, configura infusao basal novamente     
        if((P3IN & BUTTON5) == 0){
-           configure_ative_basal_profile();
+           
+           configure_active_basal_profile();
            save_active_basal_profile();
+           
            WriteFlash(SEG_A, segmentA_memory, TAM_SEG);
+           
             /*configura o perfil basal corrente na respectiva hora da bomba*/
-           // configura_hora_corrente(&active_basal_profile[horas]);
-           units(0);
-           hours(0);
-           basal(0);
+           configura_hora_corrente(&active_basal_profile[horas]);
+           
            __delay_cycles(150000);
+           
+           upper_number_float(0.0);
        }
        
        //Botao para voltar o motor
        if((P3IN & BUTTON2) == 0){
-           flag_reverse_engine = 1;        
+           flag_reverse_engine = 1;
        }
 
        //caso aperte o botao 3 simula infusao bolus
