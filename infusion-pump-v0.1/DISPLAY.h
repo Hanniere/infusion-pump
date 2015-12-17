@@ -2,32 +2,36 @@
 
 	Funcoes para utilizar o display glcd da placa.
 
-	lower_segment.cpp
-    upper_segment.cpp
+    display.c
 	
 	Autor: Hanniere de Faria Veloso dos Santos
-	Data: agosto, 2014
+	Data: novembro, 2015
 
 
 ********************************************************************************************/
 
-#define TAMANHO_FRASE 15
 
-//superior
-void upper_number_float(float num);
-void numero(unsigned short numero, unsigned short pos);
-void units(unsigned short mode);
-void hours(unsigned short mode);
-void percent(unsigned short mode);
-void bolus(unsigned short mode);
-void basal(unsigned short mode);
-void point(unsigned short mode);
-//inferior
-void cout(unsigned char frase[TAMANHO_FRASE]);
-//simbolos de suporte - posiçao: inferior
-void battery(float percent);//representa a quantidade de carga da bateria
-void syringe(unsigned short int mode);//precisa mudar! funcionará como a bateria
-void stop(unsigned short int mode);
-void arrow(unsigned short int mode);
-void clock(unsigned short int mode);
-void bell(unsigned short int mode);
+#define TAMANHO_FRASE 5
+#define TYPE_INTERVAL 1
+#define TYPE_HOUR 2
+#define SYMBOL_ON 1
+#define SYMBOL_OFF 0
+
+//symbols
+void clock_symbol(unsigned short int mode);
+void syringe_symbol(unsigned short int digit);
+void battery_symbol(unsigned short int digit);
+void stop_symbol(unsigned short int mode);
+void bell_symbol(unsigned short int mode);
+void hand_symbol(unsigned short int mode);
+void bolus_symbol(unsigned short int mode);
+void basal_symbol(unsigned short int mode);
+
+//displays
+void write_lower_string(unsigned char phrase[TAMANHO_FRASE]);
+void write_in_upper_digits(float num);
+void write_hours(unsigned short hour1, unsigned short hour2, unsigned short type);
+
+
+//configure display
+void configure_display();

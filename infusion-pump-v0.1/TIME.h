@@ -23,10 +23,10 @@
 
 
 /*-------------------VARIAVEIS GLOBAIS-----------------------*/
-extern volatile short int tick;
-extern volatile short int segundos;
-extern volatile short int minutos;
-extern volatile short int horas;
+extern volatile unsigned short int tick;
+extern volatile unsigned short int segundos;
+extern volatile unsigned short int minutos;
+extern volatile unsigned short int horas;
 
 
 
