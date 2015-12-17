@@ -16,6 +16,8 @@ void configure_ative_basal_profile(){
     stop_symbol(1);
     clock_symbol(0);
     basal_symbol(1);
+    unit_symbol(1);
+    h_symbol(1);
 
     for(i = 0 ; i < DAY_HOURS; i++){
         
@@ -54,12 +56,17 @@ void configure_ative_basal_profile(){
                 conta_infusoes[i] = 0;
                 /*9 unidades em uma hora, 0.1 a cada 4 segundos*/
                 active_basal_profile[i] = insulina_unit;
-                clock_symbol(1);
                 /*Sai do while*/
                 break;
             }
         }
     }
+    //simulando que a infusao basal foi ativada
+    clock_symbol(1);
+    stop_symbol(0);
+    unit_symbol(0);
+    h_symbol(0);
+    basal_symbol(0);
     //limpando display superior
     write_in_upper_digits(-1.0);
 }
@@ -69,6 +76,8 @@ void configure_bolus_infusion(){
     button_2_pressed = 0;
     float insulina_unit = 0.0;
     write_lower_string("bolus");
+    write_in_upper_digits(insulina_unit);
+    unit_symbol(1);
     bolus_symbol(1);
     while(1){
   
@@ -101,6 +110,7 @@ void configure_bolus_infusion(){
     }
     
     bolus_symbol(0);
+    unit_symbol(0);
     //limpando display superior
     write_in_upper_digits(-1.0);
 }
@@ -146,6 +156,9 @@ void configure_system_time(){
             horas = horas_copy;
             /*Sai do while*/
             wait_user_flag = 0;
+            //simula o inicio da infusao basal novamente
+            stop_symbol(0);
+            clock_symbol(0);
         }
     }
 

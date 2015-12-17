@@ -110,6 +110,17 @@ int main(void)
 
            //__delay_cycles(150000);
         }
+        //caso aperte o botao 4, configura infusao bolus 
+        if(button_4_pressed){
+           configure_system_time();
+           write_lower_string("home");
+           //save_active_basal_profile();
+           //WriteFlash(SEG_A, segmentA_memory, TAM_SEG);
+            /*configura o perfil basal corrente na respectiva hora da bomba*/
+           // configura_hora_corrente(&active_basal_profile[horas]);
+
+           //__delay_cycles(150000);
+        }
 //        if((P1IN & BIT5)){ //verificando se botao S1 (P1.5) esta apertado (Botao oposto ao s1)
 //            P1OUT &= ~BIT6; //Desliga a placa
 //        }

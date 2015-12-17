@@ -16,4 +16,6 @@ void configure_ative_basal_profile();
 
 void configure_bolus_infusion();
 
+void configure_system_time();
+
 #endif // GUI_FUNCTIONS_INCLUDED

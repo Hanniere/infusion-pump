@@ -820,7 +820,7 @@ void basal_symbol(unsigned short int digit){
 
 void colon_symbol(unsigned short int digit){
 	switch(digit){
-		//bateria vazia ou limpar segmentos da bateria
+		//bateria vazia ou limpar segmentos
 		case 0:
 			LCDMEM[7] &= ~BIT4;
 		break;			
@@ -829,6 +829,43 @@ void colon_symbol(unsigned short int digit){
 		break;
 	}
 }
+
+void unit_symbol(unsigned short int digit){
+	switch(digit){
+		//unidade vazia ou limpar segmentos
+		case 0:
+			LCDMEM[3] &= ~BIT3;
+		break;			
+		case 1:
+			LCDMEM[3] |= BIT3;
+		break;
+	}
+}
+
+void h_symbol(unsigned short int digit){
+	switch(digit){
+		// /h vazia ou limpar segmentos
+		case 0:
+			LCDMEM[3] &= ~BIT2;
+		break;			
+		case 1:
+			LCDMEM[3] |= BIT2;
+		break;
+	}
+}
+
+void percentage_symbol(unsigned short int digit){
+	switch(digit){
+		//unidade vazia ou limpar segmentos da bateria
+		case 0:
+			LCDMEM[3] &= ~BIT1;
+		break;			
+		case 1:
+			LCDMEM[3] |= BIT1;
+		break;
+	}
+}
+
 
 void write_lower_string(unsigned char phrase[TAMANHO_FRASE]){
 
@@ -908,12 +945,12 @@ void write_hours(unsigned short hour1, unsigned short hour2, unsigned short type
     numbers[2] = '-';
     numbers[3] = hour2 / 10 + 0x30;
     numbers[4] = hour2 % 10 + 0x30;                
-
+    
+    write_lower_string(numbers);
+    
     if(type == TYPE_HOUR){
         numbers[2] = ' ';
         colon_symbol(SYMBOL_ON);    
     }
-    
-    write_lower_string(numbers);
 }
 

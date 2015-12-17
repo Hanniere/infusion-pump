@@ -26,6 +26,10 @@ void bell_symbol(unsigned short int mode);
 void hand_symbol(unsigned short int mode);
 void bolus_symbol(unsigned short int mode);
 void basal_symbol(unsigned short int mode);
+void unit_symbol(unsigned short int digit);
+void h_symbol(unsigned short int digit);
+void percentage_symbol(unsigned short int digit);
+
 
 //displays
 void write_lower_string(unsigned char phrase[TAMANHO_FRASE]);
