@@ -1,4 +1,6 @@
 Debug
 settings
-/infusion-pump-v0.1/*.dep
-/infusion-pump-v0.1/*.eww
+*.ewd
+*.ewp
+*.eww
+*.dep
