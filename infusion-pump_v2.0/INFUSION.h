@@ -17,6 +17,12 @@
 /*Definicao da quantidade minima de infusao da bomba*/
 #define QTDEMININFUSAO 0.1
 
+/*Quantidade minima de insulina em uma hora*/
+#define MIN_INSULINA 0.0
+
+/*Quantidade maxima de insulina em uma hora*/
+#define MAX_INSULINA 90.0
+
 /*Qtde de graus que o motor precisa girar por qtde minima de infusao (isso deve ser calculado)*/
 #define GRAUMINIMO 90
 

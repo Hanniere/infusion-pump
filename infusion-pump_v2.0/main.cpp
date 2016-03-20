@@ -3,6 +3,9 @@
 #include "DISPLAY.h"
 #include "GUI_FUNCTIONS.h"
 #include "INFUSION.h"
+#include "MSP_FLASH.h"
+#include "TIME.h"
+#include "math.h"
 
 
 volatile unsigned short button_1_pressed; // botão a esquerda
@@ -11,22 +14,13 @@ volatile unsigned short button_3_pressed; // botão a direita
 volatile unsigned short button_4_pressed;
 
 
-void initialize_active_basal_profile(){
-    unsigned short i = 0;
-
-    for(i = 0; i < DAY_HOURS; i++){
-        active_basal_profile[i] = (float) 0.0;
-    }
-}
-
-
 void configure_buttons(){
     
     // /*Configuracao do botao 1*/
-    // P1IE |= BIT5; // P1.5 interrupt enabled
-    // P1IFG &= ~BIT5; // P1.5 IFG cleared
-    // P1IES &= ~BIT5; //low to hight
-    // //P1IES |= BIT5; //high to low
+    // P1IE |= BUTTON1; // P1.5 interrupt enabled
+    // P1IFG &= ~BUTTON1; // P1.5 IFG cleared
+    // P1IES &= ~BUTTON1; //low to hight
+    // //P1IES |= BUTTON1; //high to low
     
     button_1_pressed = 0;
     button_2_pressed = 0;
@@ -36,39 +30,96 @@ void configure_buttons(){
     /*Configuracao do botao 2*/
     P1IE |= BUTTON2; // P1.5 interrupt enabled
     P1IFG &= ~BUTTON2; // P1.5 IFG cleared
-    P1IES &= ~BUTTON2; //low to hight
-    //P1IES |= BUTTON2; //high to low
+    //P1IES &= ~BUTTON2; //low to hight
+    P1IES |= BUTTON2; //high to low
     
     /*Configuracao do botao 3*/
     P2IE |= BUTTON3; // P2.4 interrupt enabled
     P2IFG &= ~BUTTON3; // P2.4 IFG cleared
-    P2IES &= ~BUTTON3; //low to hight
-    //P1IES |= BIT5; //high to low
+    //P2IES &= ~BUTTON3; //low to hight
+    P2IES |= BUTTON3; //high to low
     
     /*Configuracao do botao 4*/
     P2IE |= BUTTON4; // P2.3 interrupt enabled
     P2IFG &= ~BUTTON4; // P2.3 IFG cleared
-    P2IES &= ~BUTTON4; //low to hight
-    //P1IES |= BIT5; //high to low
+    //P2IES &= ~BUTTON4; //low to hight
+    P2IES |= BUTTON4; //high to low
     
     
     __enable_interrupt(); 
 }
 
 
-void initialize_system(){
+void load_active_basal_profile(){
+        
+    /*Le 128 bytes do segmento A e joga para o vetor que representa a memoria*/
+    ReadFlash(SEG_A, segmentA_memory, TAM_SEG);
     
+    unsigned short i = 0;
+
+    for(i = 0; i < DAY_HOURS; i++){
+		
+//		if(!isdigit(segmentA_memory[(i*2)]) || !isdigit(segmentA_memory[(i*2)+1])){
+//			initialize_active_basal_profile();
+//			return;
+//		}
+//        else
+        active_basal_profile[i] =  (unsigned short)segmentA_memory[(i*2)] + (float)(segmentA_memory[(i*2)+1])/10;
+        if(active_basal_profile[i] <= MIN_INSULINA &&  active_basal_profile[i] >= MAX_INSULINA){
+            active_basal_profile[i] = 0.0;
+        }	
+    }
+}
+
+void save_active_basal_profile(){
+
+    unsigned short i = 0;
+    unsigned short inteiro = 0;
+    unsigned short fracionario = 0;
+
+    for(i = 0; i < DAY_HOURS; i++){
+        inteiro = (unsigned short)active_basal_profile[i];
+        fracionario = (unsigned short)round((active_basal_profile[i] - inteiro) * 10);
+
+        segmentA_memory[(i*2)] =  (char)inteiro;
+        segmentA_memory[(i*2)+1] = (char)fracionario;
+    }
+
+}
+
+void initialize_system(){
+    int i =0;
     WDTCTL = WDTPW + WDTHOLD;             // Stop watchdog timer
-    //FLL_CTL0 |= XCAP18PF;                 // Set load capacitance for xtal  
+    FLL_CTL0 |= XCAP14PF;                     // Configure load caps
+    for (i = 0; i < 10000; i++);              // Delay for 32 kHz crystal to
+                                            // stabilize
+    
+    do
+    {
+      IFG1 &= ~OFIFG;                         // Clear osc fault flag
+      for (i = 0; i < 1000; i++);             // Delay for osc to stabilize
+    } while(IFG1 & OFIFG);                    // Check to see if osc flag is set
+
+    FLL_CTL1 = SELM_A + FLL_DIV_8;
+    
     configure_display();
     
     P1DIR = BIT6;//Pino 1.6 setado para saida
     P1OUT = BIT6;//Pino 1.6 setado para 1 (manter a placa ligada)
     //Pino 1.6 setado para entrada (Pinos sao de entrada por default)
     //P1DIR &= ~BIT6;
-    configure_buttons();
-    initialize_active_basal_profile();
+ 
+    load_active_basal_profile();
     
+    /*simulando as horas da bomba e consumo ate o momento*/
+	horas = 0;
+	minutos = 0;
+	segundos = 0;
+    
+    //comeca a contagem do tempo
+    configura_timerA();
+    
+    configure_buttons();
     stop_symbol(1);
     battery_symbol(2);
     syringe_symbol(2);
@@ -176,6 +227,8 @@ __interrupt void Port_2(void){
         P2IFG &= ~BUTTON4; // P2.3IFG cleared
     }    
 }
+
+//Verificar se algum botao continua ainda pressionado (Button debouncer)
 //#pragma vector=WDT_VECTOR
 //__interrupt void WDT_ISR(void)
 //{

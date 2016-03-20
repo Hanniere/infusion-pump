@@ -10,7 +10,6 @@ void configure_ative_basal_profile(){
     button_2_pressed = 0;
     unsigned short i = 0;
     float insulina_unit = 0.0;
-    //write_lower_string("basal");
     
     //infusao deve ser paralisada
     stop_symbol(1);
@@ -18,7 +17,9 @@ void configure_ative_basal_profile(){
     basal_symbol(1);
     unit_symbol(1);
     h_symbol(1);
-
+    
+    //desativa infusao basal
+    //ativa_infusao();
     for(i = 0 ; i < DAY_HOURS; i++){
         
         insulina_unit = active_basal_profile[i];
@@ -28,16 +29,13 @@ void configure_ative_basal_profile(){
         write_hours((unsigned short)i, (unsigned short)i+1, TYPE_INTERVAL);
           
         while(1){
-            //lembrar que esta havendo um delay      
-            //ativa_infusao();
             
             if(button_3_pressed){ // botao pressionado retorna falso, pois coloca o pino no terra
                 button_3_pressed = 0;                
-                if(insulina_unit > 0.0){
+                if(insulina_unit >= 0.1){
                     insulina_unit = insulina_unit - 0.1;
                     write_in_upper_digits(insulina_unit);
-                }
-                
+                }   
             }
 
              if(button_4_pressed){
@@ -46,7 +44,6 @@ void configure_ative_basal_profile(){
                     insulina_unit = insulina_unit + 0.1;
                     write_in_upper_digits(insulina_unit);
                 }
-
              }
 
             //Confirma edicao da quantidade de unidades da infusao basal para cada hora
@@ -61,6 +58,7 @@ void configure_ative_basal_profile(){
             }
         }
     }
+    
     //simulando que a infusao basal foi ativada
     clock_symbol(1);
     stop_symbol(0);
