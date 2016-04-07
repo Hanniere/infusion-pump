@@ -143,7 +143,7 @@ int main(void)
     initialize_system();
         
     while(1){
-        
+        put_cpu_to_sleep();
         //caso aperte o botao 2, configura infusao basal     
         if(button_2_pressed){
           //__disable_interrupt();
@@ -175,7 +175,6 @@ int main(void)
            //__delay_cycles(150000);
         }
 		
-		put_cpu_to_sleep();
 //        if((P1IN & BIT5)){ //verificando se botao S1 (P1.5) esta apertado (Botao oposto ao s1)
 //            P1OUT &= ~BIT6; //Desliga a placa
 //        }

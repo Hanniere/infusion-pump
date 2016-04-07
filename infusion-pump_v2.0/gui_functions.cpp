@@ -40,7 +40,7 @@ void configure_ative_basal_profile(){
         write_hours((unsigned short)i, (unsigned short)i+1, TYPE_INTERVAL);
           
         while(1){
-            
+            put_cpu_to_sleep();
             if(button_3_pressed){ // botao pressionado retorna falso, pois coloca o pino no terra
                 button_3_pressed = 0;                
                 if(insulina_unit >= 0.1){
@@ -67,7 +67,6 @@ void configure_ative_basal_profile(){
                 /*Sai do while*/
                 break;
             }
-			put_cpu_to_sleep();
         }
     }
     
@@ -90,7 +89,7 @@ void configure_bolus_infusion(){
     unit_symbol(1);
     bolus_symbol(1);
     while(1){
-  
+        put_cpu_to_sleep();
         //ativa_infusao();
         
         if(button_3_pressed){ // botao pressionado retorna falso, pois coloca o pino no terra
@@ -117,7 +116,6 @@ void configure_bolus_infusion(){
             //Infusao basal deve ser paralisada quando apertar em ok e infundir bolus
             break;
         }
-		put_cpu_to_sleep();
     }
     
     bolus_symbol(0);
@@ -128,7 +126,7 @@ void configure_bolus_infusion(){
 
 //funcao que configura o relogio da bomba
 void configure_system_time(){
-    button_2_pressed = 0;
+    button_3_pressed = 0;
     unsigned short wait_user_flag = 1;
     unsigned short int horas_copy = horas;
     unsigned short int minutos_copy = minutos;
@@ -139,8 +137,9 @@ void configure_system_time(){
     write_hours(horas_copy, minutos_copy, TYPE_HOUR);
           
     while(wait_user_flag){
+        put_cpu_to_sleep();
         
-        if(button_3_pressed){ // botao pressionado retorna falso, pois coloca o pino no terra
+		if(button_3_pressed){
             button_3_pressed = 0;                
             if(horas_copy + 1 > 23){
                 horas_copy = 0;
@@ -165,13 +164,14 @@ void configure_system_time(){
             button_2_pressed = 0;
             minutos = minutos_copy;
             horas = horas_copy;
+            segundos = 0;
             /*Sai do while*/
             wait_user_flag = 0;
             //simula o inicio da infusao basal novamente
             stop_symbol(0);
             clock_symbol(0);
         }
-		put_cpu_to_sleep();
+		
     }
 
     //limpando display superior

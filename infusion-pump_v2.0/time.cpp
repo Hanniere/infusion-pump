@@ -3,7 +3,7 @@
 #include "INFUSION.h"
 #include "DISPLAY.h"
 
-volatile unsigned short int tick;
+
 volatile unsigned short int segundos;
 volatile unsigned short int minutos;
 volatile unsigned short int horas;
@@ -23,35 +23,33 @@ void configura_timerA(void){
 #pragma vector=TIMERA0_VECTOR
 __interrupt void Timer_A (void){
 	
-	//tick++;
-	
-	//if(tick >= TICKS_PER_SECOND){
-		segundos++;
-		//verifica se deve ocorrer infusao
-		//verifica_infusao();
-		//tick = 0;
-		if (segundos > 59) {
-			segundos = 0;
-			minutos++;
-			if (minutos > 59) {
-				minutos = 0;
-				horas++;
 
-				if (horas > 23) {
-					horas = 0;
-				}
-				qtde_infundida_hr = 0.0;
-				//configura perfil de infusao da hr corrente
-				//configura_hora_corrente(&active_basal_profile[horas]);
+	segundos++;
+	//verifica se deve ocorrer infusao
+	//verifica_infusao();
+
+	if (segundos > 59) {
+		segundos = 0;
+		minutos++;
+		if (minutos > 59) {
+			minutos = 0;
+			horas++;
+
+			if (horas > 23) {
+				horas = 0;
 			}
+			qtde_infundida_hr = 0.0;
+			//configura perfil de infusao da hr corrente
+			//configura_hora_corrente(&active_basal_profile[horas]);
 		}
-        
-        if(clock_state==0){
-            clock_state = 1;
-        }
-        else{
-            clock_state = 0;
-        }
-        clock_symbol(clock_state);
-	//}
+	}
+	
+	if(clock_state==0){
+		clock_state = 1;
+	}
+	else{
+		clock_state = 0;
+	}
+	clock_symbol(clock_state);
+
 }
