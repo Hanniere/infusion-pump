@@ -12,9 +12,9 @@ unsigned short int clock_state = 0;
 void configura_timerA(void){
 	
 	CCTL0 = CCIE; // CCR0 interrupcao ativada
-	CCR0 = 511; //Valor final de contagem no registrador ccr0
-	TACTL = TASSEL_1 + MC_1 + ID_3; // ACLK, upmode 32khz/8
-	_BIS_SR(GIE);  // Ativa as interrupções
+	CCR0 = 8191; //Valor final de contagem no registrador ccr0
+	TACTL = TASSEL_1 + MC_1 + ID_2; // ACLK, upmode 32khz/4
+    //_BIS_SR(GIE);  // Ativa as interrupções
 	
 }
 

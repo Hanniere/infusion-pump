@@ -1,3 +1,14 @@
+/**************************************************************************************
+
+	Funcoes de navegacao na interface do usuario
+
+	gui_functions.cpp
+	
+	Autor: Hanniere de Faria Veloso dos Santos
+	Data: setembro, 2016
+
+
+********************************************************************************************/
 #include <msp430FG437.h>
 #include "INFUSION.h"
 #include "GUI_FUNCTIONS.h"
@@ -56,6 +67,7 @@ void configure_ative_basal_profile(){
                 /*Sai do while*/
                 break;
             }
+			put_cpu_to_sleep();
         }
     }
     
@@ -66,7 +78,7 @@ void configure_ative_basal_profile(){
     h_symbol(0);
     basal_symbol(0);
     //limpando display superior
-    write_in_upper_digits(-1.0);
+    write_in_upper_digits(CLEAN_UPPER_DISPLAY);
 }
 
 //funcao que escolhe quantidade em unidades para uma infusao bolus
@@ -105,12 +117,13 @@ void configure_bolus_infusion(){
             //Infusao basal deve ser paralisada quando apertar em ok e infundir bolus
             break;
         }
+		put_cpu_to_sleep();
     }
     
     bolus_symbol(0);
     unit_symbol(0);
     //limpando display superior
-    write_in_upper_digits(-1.0);
+    write_in_upper_digits(CLEAN_UPPER_DISPLAY);
 }
 
 //funcao que configura o relogio da bomba
@@ -158,8 +171,9 @@ void configure_system_time(){
             stop_symbol(0);
             clock_symbol(0);
         }
+		put_cpu_to_sleep();
     }
 
     //limpando display superior
-    write_in_upper_digits(-1.0);
+    write_in_upper_digits(CLEAN_UPPER_DISPLAY);
 }

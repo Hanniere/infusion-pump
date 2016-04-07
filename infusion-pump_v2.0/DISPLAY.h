@@ -16,6 +16,7 @@
 #define TYPE_HOUR 2
 #define SYMBOL_ON 1
 #define SYMBOL_OFF 0
+#define CLEAN_UPPER_DISPLAY -1.0
 
 //symbols
 void clock_symbol(unsigned short int mode);

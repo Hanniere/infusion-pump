@@ -20,3 +20,5 @@ extern volatile unsigned short button_3_pressed; // flag botão a esquerda
 extern volatile unsigned short button_2_pressed; // flag botao acima
 extern volatile unsigned short button_4_pressed; // flag botao a direita
 
+void put_cpu_to_sleep();
+

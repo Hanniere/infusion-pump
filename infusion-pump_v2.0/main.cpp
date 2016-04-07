@@ -8,10 +8,10 @@
 #include "math.h"
 
 
-volatile unsigned short button_1_pressed; // botão a esquerda
+volatile unsigned short button_1_pressed; // botão abaixo
 volatile unsigned short button_2_pressed; //botao acima
-volatile unsigned short button_3_pressed; // botão a direita
-volatile unsigned short button_4_pressed;
+volatile unsigned short button_3_pressed; // botão a esquerda
+volatile unsigned short button_4_pressed; // botao a direita
 
 
 void configure_buttons(){
@@ -46,7 +46,7 @@ void configure_buttons(){
     P2IES |= BUTTON4; //high to low
     
     
-    __enable_interrupt(); 
+    //__enable_interrupt();
 }
 
 
@@ -55,20 +55,21 @@ void load_active_basal_profile(){
     /*Le 128 bytes do segmento A e joga para o vetor que representa a memoria*/
     ReadFlash(SEG_A, segmentA_memory, TAM_SEG);
     
-    unsigned short i = 0;
+    unsigned short i = 0, data_error = 0;
 
     for(i = 0; i < DAY_HOURS; i++){
-		
-//		if(!isdigit(segmentA_memory[(i*2)]) || !isdigit(segmentA_memory[(i*2)+1])){
-//			initialize_active_basal_profile();
-//			return;
-//		}
-//        else
         active_basal_profile[i] =  (unsigned short)segmentA_memory[(i*2)] + (float)(segmentA_memory[(i*2)+1])/10;
-        if(active_basal_profile[i] <= MIN_INSULINA &&  active_basal_profile[i] >= MAX_INSULINA){
-            active_basal_profile[i] = 0.0;
-        }	
+        //verificando se algum valor nao obedece o range permitido
+		if(active_basal_profile[i] <= MIN_INSULINA || active_basal_profile[i] >= MAX_INSULINA){
+			data_error = 1;
+        }
     }
+	//caso tenha algum valor q nao obdeca ao range, configura a primeira vez q liga a placa e os valores precisam ser zerados
+	if (data_error){
+		for(i = 0; i < DAY_HOURS; i++){
+			active_basal_profile[i] = 0.0;
+		}
+	}
 }
 
 void save_active_basal_profile(){
@@ -86,13 +87,17 @@ void save_active_basal_profile(){
     }
 
 }
+/*Essa funcao entra em no low power mode 3 com as interrupcoes globais ativadas*/
+void put_cpu_to_sleep(){
+    __bis_SR_register(LPM3_bits + GIE);
+}
 
 void initialize_system(){
     int i =0;
     WDTCTL = WDTPW + WDTHOLD;             // Stop watchdog timer
-    FLL_CTL0 |= XCAP14PF;                     // Configure load caps
-    for (i = 0; i < 10000; i++);              // Delay for 32 kHz crystal to
-                                            // stabilize
+    
+	FLL_CTL0 |= XCAP14PF;                     // Configure load caps
+    for (i = 0; i < 10000; i++);              // Delay for 32 kHz crystal to stabilize
     
     do
     {
@@ -100,8 +105,6 @@ void initialize_system(){
       for (i = 0; i < 1000; i++);             // Delay for osc to stabilize
     } while(IFG1 & OFIFG);                    // Check to see if osc flag is set
 
-    FLL_CTL1 = SELM_A + FLL_DIV_8;
-    
     configure_display();
     
     P1DIR = BIT6;//Pino 1.6 setado para saida
@@ -115,14 +118,19 @@ void initialize_system(){
 	horas = 0;
 	minutos = 0;
 	segundos = 0;
-    
-    //comeca a contagem do tempo
-    configura_timerA();
-    
-    configure_buttons();
-    stop_symbol(1);
+	
+	stop_symbol(1);
     battery_symbol(2);
     syringe_symbol(2);
+    
+	//comeca a contagem do tempo
+    configura_timerA();
+	
+	configure_buttons();
+    
+    write_lower_string("home");
+    
+    put_cpu_to_sleep();
     // bell(0);
     // clock(0);
     // hand(0);
@@ -133,45 +141,41 @@ void initialize_system(){
 int main(void)
 {
     initialize_system();
-    write_lower_string("home");
-       
-    while(1){
         
+    while(1){
         
         //caso aperte o botao 2, configura infusao basal     
         if(button_2_pressed){
+          //__disable_interrupt();
            configure_ative_basal_profile();
            write_lower_string("home");
            
-           //save_active_basal_profile();
-           //WriteFlash(SEG_A, segmentA_memory, TAM_SEG);
+           save_active_basal_profile();
+           WriteFlash(SEG_A, segmentA_memory, TAM_SEG);
             /*configura o perfil basal corrente na respectiva hora da bomba*/
            // configura_hora_corrente(&active_basal_profile[horas]);
 
            //__delay_cycles(150000);
         }
-        //caso aperte o botao 4, configura infusao bolus 
+        //caso aperte o botao 3, configura infusao bolus 
         if(button_3_pressed){
            configure_bolus_infusion();
            write_lower_string("home");
-           //save_active_basal_profile();
-           //WriteFlash(SEG_A, segmentA_memory, TAM_SEG);
-            /*configura o perfil basal corrente na respectiva hora da bomba*/
-           // configura_hora_corrente(&active_basal_profile[horas]);
 
            //__delay_cycles(150000);
         }
-        //caso aperte o botao 4, configura infusao bolus 
+        //caso aperte o botao 4, configura a hora da bomba (hora, minuto)
         if(button_4_pressed){
            configure_system_time();
            write_lower_string("home");
-           //save_active_basal_profile();
-           //WriteFlash(SEG_A, segmentA_memory, TAM_SEG);
+           
             /*configura o perfil basal corrente na respectiva hora da bomba*/
            // configura_hora_corrente(&active_basal_profile[horas]);
 
            //__delay_cycles(150000);
         }
+		
+		put_cpu_to_sleep();
 //        if((P1IN & BIT5)){ //verificando se botao S1 (P1.5) esta apertado (Botao oposto ao s1)
 //            P1OUT &= ~BIT6; //Desliga a placa
 //        }
@@ -198,6 +202,8 @@ __interrupt void Port_1(void){
         button_2_pressed = 1;
         P1IFG &= ~BUTTON2; // P1.5 IFG cleared
     }
+    //ativa CPU (sai do low power mode 3)
+    __bic_SR_register_on_exit(LPM3_bits);
     //P1OUT &= ~BIT6; //Desliga a placa
     //qtde_infundida_hr += 0.1;
     //write_in_upper_digits(qtde_infundida_hr);
@@ -225,7 +231,9 @@ __interrupt void Port_2(void){
     if(P2IFG & BUTTON4) {
         button_4_pressed = 1;
         P2IFG &= ~BUTTON4; // P2.3IFG cleared
-    }    
+    }
+	//ativa CPU (sai do low power mode 3)
+	__bic_SR_register_on_exit(LPM3_bits);
 }
 
 //Verificar se algum botao continua ainda pressionado (Button debouncer)
