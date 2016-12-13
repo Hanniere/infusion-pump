@@ -16,18 +16,21 @@
 #include "DISPLAY.h"
 #include "MAIN.h"
 
+
 //funcao que configura o perfil basal ativo para as 24 horas do dia DAY_HOURS
 void configure_ative_basal_profile(){
-    button_2_pressed = 0;
     unsigned short i = 0;
     float insulina_unit = 0.0;
     
-    //infusao deve ser paralisada
-    stop_symbol(1);
-    clock_symbol(0);
+    //infusao basal deve ser paralisada
+    if(basal_active)
+        stop_symbol(1);
+    
+    //clock_symbol(0);
     basal_symbol(1);
     unit_symbol(1);
     h_symbol(1);
+    load_active_basal_profile();
     
     //desativa infusao basal
     //ativa_infusao();
@@ -71,7 +74,7 @@ void configure_ative_basal_profile(){
     }
     
     //simulando que a infusao basal foi ativada
-    clock_symbol(1);
+    
     stop_symbol(0);
     unit_symbol(0);
     h_symbol(0);
@@ -82,7 +85,6 @@ void configure_ative_basal_profile(){
 
 //funcao que escolhe quantidade em unidades para uma infusao bolus
 void configure_bolus_infusion(){
-    button_2_pressed = 0;
     float insulina_unit = 0.0;
     write_lower_string("bolus");
     write_in_upper_digits(insulina_unit);
@@ -126,7 +128,6 @@ void configure_bolus_infusion(){
 
 //funcao que configura o relogio da bomba
 void configure_system_time(){
-    button_3_pressed = 0;
     unsigned short wait_user_flag = 1;
     unsigned short int horas_copy = horas;
     unsigned short int minutos_copy = minutos;

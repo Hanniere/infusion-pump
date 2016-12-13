@@ -12,6 +12,7 @@ volatile unsigned short button_1_pressed; // botão abaixo
 volatile unsigned short button_2_pressed; //botao acima
 volatile unsigned short button_3_pressed; // botão a esquerda
 volatile unsigned short button_4_pressed; // botao a direita
+volatile unsigned short basal_active; // status da infusao basal
 
 
 void configure_buttons(){
@@ -60,7 +61,7 @@ void load_active_basal_profile(){
     for(i = 0; i < DAY_HOURS; i++){
         active_basal_profile[i] =  (unsigned short)segmentA_memory[(i*2)] + (float)(segmentA_memory[(i*2)+1])/10;
         //verificando se algum valor nao obedece o range permitido
-		if(active_basal_profile[i] <= MIN_INSULINA || active_basal_profile[i] >= MAX_INSULINA){
+		if(active_basal_profile[i] < MIN_INSULINA || active_basal_profile[i] >= MAX_INSULINA){
 			data_error = 1;
         }
     }
@@ -80,11 +81,13 @@ void save_active_basal_profile(){
 
     for(i = 0; i < DAY_HOURS; i++){
         inteiro = (unsigned short)active_basal_profile[i];
-        fracionario = (unsigned short)round((active_basal_profile[i] - inteiro) * 10);
+        fracionario = (unsigned short)round(fabs(active_basal_profile[i] - trunc(active_basal_profile[i])) * 10);
 
         segmentA_memory[(i*2)] =  (char)inteiro;
         segmentA_memory[(i*2)+1] = (char)fracionario;
     }
+    
+    
 
 }
 /*Essa funcao entra em no low power mode 3 com as interrupcoes globais ativadas*/
@@ -96,13 +99,14 @@ void initialize_system(){
     int i =0;
     WDTCTL = WDTPW + WDTHOLD;             // Stop watchdog timer
     
-	FLL_CTL0 |= XCAP14PF;                     // Configure load caps
+    FLL_CTL0 |= XCAP14PF;                     // Configure load caps
     for (i = 0; i < 10000; i++);              // Delay for 32 kHz crystal to stabilize
     
     do
     {
-      IFG1 &= ~OFIFG;                         // Clear osc fault flag
-      for (i = 0; i < 1000; i++);             // Delay for osc to stabilize
+        IFG1 &= ~OFIFG;                         // Clear osc fault flag
+        for (i = 0; i < 1000; i++);             // Delay for osc to stabilize
+		
     } while(IFG1 & OFIFG);                    // Check to see if osc flag is set
 
     configure_display();
@@ -111,86 +115,86 @@ void initialize_system(){
     P1OUT = BIT6;//Pino 1.6 setado para 1 (manter a placa ligada)
     //Pino 1.6 setado para entrada (Pinos sao de entrada por default)
     //P1DIR &= ~BIT6;
- 
+    
+    basal_active = 0;
+    
     load_active_basal_profile();
     
-    /*simulando as horas da bomba e consumo ate o momento*/
-	horas = 0;
-	minutos = 0;
-	segundos = 0;
-	
-	stop_symbol(1);
+    /*inicializando hora da bomba*/
+    horas = 0;
+    minutos = 0;
+    segundos = 0;
+    
+    stop_symbol(!basal_active);
     battery_symbol(2);
     syringe_symbol(2);
     
-	//comeca a contagem do tempo
+    //comeca a contagem do tempo
     configura_timerA();
-	
-	configure_buttons();
+    configure_buttons();
     
     write_lower_string("home");
     
     put_cpu_to_sleep();
-    // bell(0);
-    // clock(0);
-    // hand(0);
-    // bolus(0);
 }
 
 
-int main(void)
-{
+int main(void){
+    
     initialize_system();
-        
+    unsigned int active_menu = MENU_HOME;//Home.
+    
     while(1){
-        put_cpu_to_sleep();
-        //caso aperte o botao 2, configura infusao basal     
+        
+        //Botao 2 utilizado para navegar nas opcoes de menu disponiveis
         if(button_2_pressed){
-          //__disable_interrupt();
-           configure_ative_basal_profile();
-           write_lower_string("home");
-           
-           save_active_basal_profile();
-           WriteFlash(SEG_A, segmentA_memory, TAM_SEG);
-            /*configura o perfil basal corrente na respectiva hora da bomba*/
-           // configura_hora_corrente(&active_basal_profile[horas]);
-
-           //__delay_cycles(150000);
+            button_2_pressed = 0;
+            active_menu = active_menu % 4;
+            active_menu++;
+            
+            switch(active_menu){
+                case MENU_BASAL:
+                    write_lower_string("basal");
+                    break;
+                case MENU_BOLUS:
+                    write_lower_string("bolus");
+                    break;
+                case MENU_TIME:
+                    write_lower_string("time");
+                    break;
+                case MENU_HOME:
+                    write_lower_string("home");
+                    break;
+            }
         }
-        //caso aperte o botao 3, configura infusao bolus 
-        if(button_3_pressed){
-           configure_bolus_infusion();
-           write_lower_string("home");
-
-           //__delay_cycles(150000);
-        }
-        //caso aperte o botao 4, configura a hora da bomba (hora, minuto)
+        //caso aperte o botao 4, entra na opcao selecionada
         if(button_4_pressed){
-           configure_system_time();
-           write_lower_string("home");
-           
-            /*configura o perfil basal corrente na respectiva hora da bomba*/
-           // configura_hora_corrente(&active_basal_profile[horas]);
-
-           //__delay_cycles(150000);
+            button_4_pressed = 0;
+            
+            switch(active_menu){
+                case MENU_BASAL:
+                    configure_ative_basal_profile();
+                    save_active_basal_profile();
+                    WriteFlash(SEG_A, segmentA_memory, TAM_SEG);
+                    break;
+                case MENU_BOLUS:
+                    configure_bolus_infusion();
+                    break;
+                case MENU_TIME:
+                    configure_system_time();
+                    break;
+            }
+            write_lower_string("home");
         }
-		
-//        if((P1IN & BIT5)){ //verificando se botao S1 (P1.5) esta apertado (Botao oposto ao s1)
-//            P1OUT &= ~BIT6; //Desliga a placa
-//        }
-//        
-//        if((P2IN & BIT3)){ //verificando se botao S2 (P1.3) esta apertado (Botao do lado esquerdo do S1)
-//            P1OUT &= ~BIT6; //Desliga a placa
-//        }
-//        
-//        if((P2IN & BIT4)){ //verificando se botao S2 (P2.4) esta apertado (Botao do lado direito do S1)
-//            P1OUT &= ~BIT6; //Desliga a placa
-//        }
-//        
-//        if((P1IN & BIT6)==0){ //verificando se botao S2 (P1.6) esta apertado (Mesmo botao q liga a placa) botao s1
-//            P1OUT &= ~BIT6; //Desliga a placa
-//        }
-    }
+        //caso aperte o botao 3, inicializa ou paraliza a infusao basal
+        if(button_3_pressed){
+            button_3_pressed = 0;
+            
+            basal_active = !basal_active;
+            stop_symbol(!basal_active);
+        }
+        put_cpu_to_sleep();
+    }   
 
 }
 
