@@ -15,6 +15,7 @@
 #include "TIME.h"
 #include "DISPLAY.h"
 #include "MAIN.h"
+#include "STEPPER_MOTOR.h"
 
 
 //funcao que configura o perfil basal ativo para as 24 horas do dia DAY_HOURS
@@ -115,6 +116,8 @@ void configure_bolus_infusion(){
         //Confirma edicao da quantidade de unidades da infusao bolus para cada hora
         if(button_2_pressed){
             button_2_pressed = 0;
+            int num = 2;
+            activate_motor(&num);
             //Infusao basal deve ser paralisada quando apertar em ok e infundir bolus
             break;
         }

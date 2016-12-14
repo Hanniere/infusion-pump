@@ -111,8 +111,9 @@ void initialize_system(){
 
     configure_display();
     
-    P1DIR = BIT6;//Pino 1.6 setado para saida
+    P1DIR = BIT6 + BIT7;//Pino 1.6 setado para saida(pino que mantem a placa ligada) e 1.7 (pino 1 do motor)
     P1OUT = BIT6;//Pino 1.6 setado para 1 (manter a placa ligada)
+    P2DIR |= BIT0 + BIT1 + BIT2; //demais pinos do motor
     //Pino 1.6 setado para entrada (Pinos sao de entrada por default)
     //P1DIR &= ~BIT6;
     
@@ -143,7 +144,7 @@ int main(void){
     
     initialize_system();
     unsigned int active_menu = MENU_HOME;//Home.
-    
+        
     while(1){
         
         //Botao 2 utilizado para navegar nas opcoes de menu disponiveis
